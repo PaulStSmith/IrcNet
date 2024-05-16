@@ -44,7 +44,7 @@ namespace Meebey.SmartIrc4net
         // digit      =  %x30-39                 ; 0-9
         // special    =  %x5B-60 / %x7B-7D
         //                  ; "[", "]", "\", "`", "_", "^", "{", "|", "}"
-        private static Regex _NicknameRegex = new Regex(@"^[A-Za-z\[\]\\`_^{|}][A-Za-z0-9\[\]\\`_\-^{|}]+$", RegexOptions.Compiled);
+        private static readonly Regex _NicknameRegex = new Regex(@"^[A-Za-z\[\]\\`_^{|}][A-Za-z0-9\[\]\\`_\-^{|}]+$", RegexOptions.Compiled);
         
         private Rfc2812()
         {

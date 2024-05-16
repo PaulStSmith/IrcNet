@@ -55,54 +55,54 @@ namespace Meebey.SmartIrc4net
         private bool             _IsAway;
         private string           _CtcpVersion;
         private bool             _ActiveChannelSyncing;
-        private bool             _PassiveChannelSyncing;
+        private readonly bool    _PassiveChannelSyncing;
         private bool             _AutoJoinOnInvite;
         private bool             _AutoRejoin;
-        private Dictionary<string, string> _AutoRejoinChannels = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _AutoRejoinChannels = new Dictionary<string, string>();
         private bool             _AutoRejoinOnKick;
         private bool             _AutoRelogin;
         private bool             _AutoNickHandling        = true;
         private bool             _SupportNonRfc;
         private bool             _SupportNonRfcLocked;
-        private StringCollection _Motd                    = new StringCollection();
+        private readonly StringCollection _Motd                    = new StringCollection();
         private bool             _MotdReceived;
-        private Array            _ReplyCodes              = Enum.GetValues(typeof(ReplyCode));
-        private StringCollection _JoinedChannels          = new StringCollection();
-        private Hashtable _Channels = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
-        private Hashtable _IrcUsers = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
+        private readonly Array            _ReplyCodes              = Enum.GetValues(typeof(ReplyCode));
+        private readonly StringCollection _JoinedChannels          = new StringCollection();
+        private readonly Hashtable _Channels = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
+        private readonly Hashtable _IrcUsers = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
         private List<ChannelInfo> _ChannelList;
-        private Object            _ChannelListSyncRoot = new Object();
+        private readonly object _ChannelListSyncRoot = new object();
         private AutoResetEvent    _ChannelListReceivedEvent;
         private List<WhoInfo>    _WhoList;
-        private Object           _WhoListSyncRoot = new Object();
+        private readonly object _WhoListSyncRoot = new object();
         private AutoResetEvent   _WhoListReceivedEvent;
         private List<BanInfo>    _BanList;
-        private Object           _BanListSyncRoot = new Object();
+        private readonly object _BanListSyncRoot = new object();
         private AutoResetEvent   _BanListReceivedEvent;
         private List<BanInfo>    _BanExceptList;
-        private Object           _BanExceptListSyncRoot = new Object();
+        private readonly Object           _BanExceptListSyncRoot = new Object();
         private AutoResetEvent   _BanExceptListReceivedEvent;
         private List<BanInfo>    _InviteExceptList;
-        private Object           _InviteExceptListSyncRoot = new Object();
+        private readonly Object           _InviteExceptListSyncRoot = new Object();
         private AutoResetEvent   _InviteExceptListReceivedEvent;
-        private ServerProperties _ServerProperties = new ServerProperties();
-        private static Regex     _ReplyCodeRegex          = new Regex("^:?[^ ]+? ([0-9]{3}) .+$", RegexOptions.Compiled);
-        private static Regex     _PingRegex               = new Regex("^PING :.*", RegexOptions.Compiled);
-        private static Regex     _ErrorRegex              = new Regex("^ERROR :.*", RegexOptions.Compiled);
-        private static Regex     _ActionRegex             = new Regex("^:?.*? PRIVMSG (.).* :"+"\x1"+"ACTION .*"+"\x1"+"$", RegexOptions.Compiled);
-        private static Regex     _CtcpRequestRegex        = new Regex("^:?.*? PRIVMSG .* :"+"\x1"+".*"+"\x1"+"$", RegexOptions.Compiled);
-        private static Regex     _MessageRegex            = new Regex("^:?.*? PRIVMSG (.).* :.*$", RegexOptions.Compiled);
-        private static Regex     _CtcpReplyRegex          = new Regex("^:?.*? NOTICE .* :"+"\x1"+".*"+"\x1"+"$", RegexOptions.Compiled);
-        private static Regex     _NoticeRegex             = new Regex("^:?.*? NOTICE (.).* :.*$", RegexOptions.Compiled);
-        private static Regex     _InviteRegex             = new Regex("^:?.*? INVITE .* .*$", RegexOptions.Compiled);
-        private static Regex     _JoinRegex               = new Regex("^:?.*? JOIN .*$", RegexOptions.Compiled);
-        private static Regex     _TopicRegex              = new Regex("^:?.*? TOPIC .* :.*$", RegexOptions.Compiled);
-        private static Regex     _NickRegex               = new Regex("^:?.*? NICK .*$", RegexOptions.Compiled);
-        private static Regex     _KickRegex               = new Regex("^:?.*? KICK .* .*$", RegexOptions.Compiled);
-        private static Regex     _PartRegex               = new Regex("^:?.*? PART .*$", RegexOptions.Compiled);
-        private static Regex     _ModeRegex               = new Regex("^:?.*? MODE (.*) .*$", RegexOptions.Compiled);
-        private static Regex     _QuitRegex               = new Regex("^:?.*? QUIT :.*$", RegexOptions.Compiled);
-        private static Regex     _BounceMessageRegex      = new Regex("^Try server (.+), port ([0-9]+)$", RegexOptions.Compiled);
+        private readonly ServerProperties _ServerProperties = new ServerProperties();
+        private static readonly Regex     _ReplyCodeRegex          = new Regex("^:?[^ ]+? ([0-9]{3}) .+$", RegexOptions.Compiled);
+        private static readonly Regex     _PingRegex               = new Regex("^PING :.*", RegexOptions.Compiled);
+        private static readonly Regex     _ErrorRegex              = new Regex("^ERROR :.*", RegexOptions.Compiled);
+        private static readonly Regex     _ActionRegex             = new Regex("^:?.*? PRIVMSG (.).* :"+"\x1"+"ACTION .*"+"\x1"+"$", RegexOptions.Compiled);
+        private static readonly Regex     _CtcpRequestRegex        = new Regex("^:?.*? PRIVMSG .* :"+"\x1"+".*"+"\x1"+"$", RegexOptions.Compiled);
+        private static readonly Regex     _MessageRegex            = new Regex("^:?.*? PRIVMSG (.).* :.*$", RegexOptions.Compiled);
+        private static readonly Regex     _CtcpReplyRegex          = new Regex("^:?.*? NOTICE .* :"+"\x1"+".*"+"\x1"+"$", RegexOptions.Compiled);
+        private static readonly Regex     _NoticeRegex             = new Regex("^:?.*? NOTICE (.).* :.*$", RegexOptions.Compiled);
+        private static readonly Regex     _InviteRegex             = new Regex("^:?.*? INVITE .* .*$", RegexOptions.Compiled);
+        private static readonly Regex     _JoinRegex               = new Regex("^:?.*? JOIN .*$", RegexOptions.Compiled);
+        private static readonly Regex     _TopicRegex              = new Regex("^:?.*? TOPIC .* :.*$", RegexOptions.Compiled);
+        private static readonly Regex     _NickRegex               = new Regex("^:?.*? NICK .*$", RegexOptions.Compiled);
+        private static readonly Regex     _KickRegex               = new Regex("^:?.*? KICK .* .*$", RegexOptions.Compiled);
+        private static readonly Regex     _PartRegex               = new Regex("^:?.*? PART .*$", RegexOptions.Compiled);
+        private static readonly Regex     _ModeRegex               = new Regex("^:?.*? MODE (.*) .*$", RegexOptions.Compiled);
+        private static readonly Regex     _QuitRegex               = new Regex("^:?.*? QUIT :.*$", RegexOptions.Compiled);
+        private static readonly Regex     _BounceMessageRegex      = new Regex("^Try server (.+), port ([0-9]+)$", RegexOptions.Compiled);
 
         ChannelModeMap ChannelModeMap { get; set; }
 
@@ -955,10 +955,12 @@ namespace Meebey.SmartIrc4net
                 host = from.Substring(atpos+1);
             }
 
-            int tmp;
-            if (int.TryParse(messagecode, out tmp)) {
-                replycode = (ReplyCode) tmp;
-            } else {
+            if (int.TryParse(messagecode, out int tmp))
+            {
+                replycode = (ReplyCode)tmp;
+            }
+            else
+            {
                 replycode = ReplyCode.Null;
             }
 
@@ -1283,24 +1285,34 @@ namespace Meebey.SmartIrc4net
 
         private string _UnescapeTagValue(string tagValue)
         {
+            int pos;
             int lastPos = 0;
-            int pos = 0;
-            string sequence;
             var unescaped = new StringBuilder(tagValue.Length);
+            string sequence;
 
-            while (lastPos < tagValue.Length && (pos = tagValue.IndexOf('\\', lastPos)) >= 0) {
+            while (lastPos < tagValue.Length && (pos = tagValue.IndexOf('\\', lastPos)) >= 0)
+            {
                 unescaped.Append(tagValue.Substring(lastPos, pos - lastPos));
                 sequence = tagValue.Substring(pos, 2);
 
-                if (sequence == @"\:") {
+                if (sequence == @"\:")
+                {
                     unescaped.Append(";");
-                } else if (sequence == @"\s") {
+                }
+                else if (sequence == @"\s")
+                {
                     unescaped.Append(" ");
-                } else if (sequence == @"\\") {
+                }
+                else if (sequence == @"\\")
+                {
                     unescaped.Append(@"\");
-                } else if (sequence == @"\r") {
+                }
+                else if (sequence == @"\r")
+                {
                     unescaped.Append("\r");
-                } else if (sequence == @"\n") {
+                }
+                else if (sequence == @"\n")
+                {
                     unescaped.Append("\n");
                 }
 
@@ -1497,9 +1509,7 @@ namespace Meebey.SmartIrc4net
         
         private void _HandleEvents(IrcMessageData ircdata)
         {
-            if (OnRawMessage != null) {
-                OnRawMessage(this, new IrcEventArgs(ircdata));
-            }
+            OnRawMessage?.Invoke(this, new IrcEventArgs(ircdata));
 
             string code;
             // special IRC messages
@@ -1718,10 +1728,8 @@ namespace Meebey.SmartIrc4net
 #endif
                                 }
                             }
-                            
-                            if (OnOp != null) {
-                                OnOp(this, new OpEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                            }
+
+                            OnOp?.Invoke(this, new OpEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                         }
                         if (remove) {
                             if (ActiveChannelSyncing && channel != null) {
@@ -1745,9 +1753,7 @@ namespace Meebey.SmartIrc4net
                                 }
                             }
                             
-                            if (OnDeop != null) {
-                                OnDeop(this, new DeopEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                            }
+                            OnDeop?.Invoke(this, new DeopEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                         }
                         break;
                     case ChannelMode.Owner:
@@ -1781,9 +1787,7 @@ namespace Meebey.SmartIrc4net
                                     }
                                 }
 
-                                if (OnOwner != null) {
-                                    OnOwner(this, new OwnerEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                                }
+                                OnOwner?.Invoke(this, new OwnerEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                             }
                             if (remove) {
                                 if (ActiveChannelSyncing && channel != null) {
@@ -1807,9 +1811,7 @@ namespace Meebey.SmartIrc4net
                                     }
                                 }
 
-                                if (OnDeowner != null) {
-                                    OnDeowner(this, new DeownerEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                                }
+                                OnDeowner?.Invoke(this, new DeownerEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                             }
                         }
                         break;
@@ -1844,9 +1846,7 @@ namespace Meebey.SmartIrc4net
                                     }
                                 }
 
-                                if (OnChannelAdmin != null) {
-                                    OnChannelAdmin(this, new ChannelAdminEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                                }
+                                OnChannelAdmin?.Invoke(this, new ChannelAdminEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                             }
                             if (remove) {
                                 if (ActiveChannelSyncing && channel != null) {
@@ -1870,9 +1870,7 @@ namespace Meebey.SmartIrc4net
                                     }
                                 }
 
-                                if (OnDeChannelAdmin != null) {
-                                    OnDeChannelAdmin(this, new DeChannelAdminEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                                }
+                                OnDeChannelAdmin?.Invoke(this, new DeChannelAdminEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                             }
                         }
                         break;
@@ -1907,9 +1905,7 @@ namespace Meebey.SmartIrc4net
                                     }
                                 }
                                 
-                                if (OnHalfop != null) {
-                                    OnHalfop(this, new HalfopEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                                }
+                                OnHalfop?.Invoke(this, new HalfopEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                             }
                             if (remove) {
                                 if (ActiveChannelSyncing && channel != null) {
@@ -1933,9 +1929,7 @@ namespace Meebey.SmartIrc4net
                                     }
                                 }
                                 
-                                if (OnDehalfop != null) {
-                                    OnDehalfop(this, new DehalfopEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                                }
+                                OnDehalfop?.Invoke(this, new DehalfopEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                             }
                         }
                         break;
@@ -1969,9 +1963,7 @@ namespace Meebey.SmartIrc4net
                                 }
                             }
                             
-                            if (OnVoice != null) {
-                                OnVoice(this, new VoiceEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                            }
+                            OnVoice?.Invoke(this, new VoiceEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                         }
                         if (remove) {
                             if (ActiveChannelSyncing && channel != null) {
@@ -1995,9 +1987,7 @@ namespace Meebey.SmartIrc4net
                                 }
                             }
                             
-                            if (OnDevoice != null) {
-                                OnDevoice(this, new DevoiceEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                            }
+                            OnDevoice?.Invoke(this, new DevoiceEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                         }
                         break;
                     case ChannelMode.Ban:
@@ -2014,9 +2004,7 @@ namespace Meebey.SmartIrc4net
 #endif
                                 }
                             }
-                            if (OnBan != null) {
-                                OnBan(this, new BanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                            }
+                            OnBan?.Invoke(this, new BanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                         }
                         if (remove) {
                             if (ActiveChannelSyncing && channel != null) {
@@ -2025,9 +2013,7 @@ namespace Meebey.SmartIrc4net
                                 Logger.ChannelSyncing.Debug("removed ban: "+temp+" from: "+ircdata.Channel);
 #endif
                             }
-                            if (OnUnban != null) {
-                                OnUnban(this, new UnbanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                            }
+                            OnUnban?.Invoke(this, new UnbanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                         }
                         break;
                     case ChannelMode.BanException:
@@ -2044,9 +2030,7 @@ namespace Meebey.SmartIrc4net
 #endif
                                 }
                             }
-                            if (OnBanException != null) {
-                                OnBanException(this, new BanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                            }
+                            OnBanException?.Invoke(this, new BanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                         }
                         if (remove) {
                             if (ActiveChannelSyncing && channel != null) {
@@ -2055,9 +2039,7 @@ namespace Meebey.SmartIrc4net
                                 Logger.ChannelSyncing.Debug("removed ban exception: "+temp+" from: "+ircdata.Channel);
                                 #endif
                             }
-                            if (OnUnBanException != null) {
-                                OnUnBanException(this, new UnbanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                            }
+                            OnUnBanException?.Invoke(this, new UnbanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                         }
                         break;
                     case ChannelMode.InviteException:
@@ -2074,9 +2056,7 @@ namespace Meebey.SmartIrc4net
 #endif
                                 }
                             }
-                            if (OnInviteException != null) {
-                                OnInviteException(this, new BanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                            }
+                            OnInviteException?.Invoke(this, new BanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                         }
                         if (remove) {
                             if (ActiveChannelSyncing && channel != null) {
@@ -2085,9 +2065,7 @@ namespace Meebey.SmartIrc4net
                                 Logger.ChannelSyncing.Debug("removed invite exception: "+temp+" from: "+ircdata.Channel);
                                 #endif
                             }
-                            if (OnUnInviteException != null) {
-                                OnUnInviteException(this, new UnbanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
-                            }
+                            OnUnInviteException?.Invoke(this, new UnbanEventArgs(ircdata, ircdata.Channel, ircdata.Nick, temp));
                         }
                         break;
                     case ChannelMode.UserLimit:
@@ -2169,9 +2147,7 @@ namespace Meebey.SmartIrc4net
 #endif
             RfcPong(server, Priority.Critical);
 
-            if (OnPing != null) {
-                OnPing(this, new PingEventArgs(ircdata, server));
-            }
+            OnPing?.Invoke(this, new PingEventArgs(ircdata, server));
         }
 
         /// <summary>
@@ -2180,9 +2156,7 @@ namespace Meebey.SmartIrc4net
         /// <param name="ircdata">Message data containing pong information</param>
         private void _Event_PONG(IrcMessageData ircdata)     
         {
-            if (OnPong != null) {
-                OnPong(this, new PongEventArgs(ircdata, ircdata.Irc.Lag));
-            }
+            OnPong?.Invoke(this, new PongEventArgs(ircdata, ircdata.Irc.Lag));
         }
 
         /// <summary>
@@ -2196,9 +2170,7 @@ namespace Meebey.SmartIrc4net
             Logger.Connection.Info("received ERROR from IRC server");
 #endif
 
-            if (OnError != null) {
-                OnError(this, new ErrorEventArgs(ircdata, message));
-            }
+            OnError?.Invoke(this, new ErrorEventArgs(ircdata, message));
         }
 
         /// <summary>
@@ -2268,9 +2240,11 @@ namespace Meebey.SmartIrc4net
                 IrcUser ircuser = GetIrcUser(who);
 
                 if (ircuser == null) {
-                    ircuser = new IrcUser(who, this);
-                    ircuser.Ident = ircdata.Ident;
-                    ircuser.Host  = ircdata.Host;
+                    ircuser = new IrcUser(who, this)
+                    {
+                        Ident = ircdata.Ident,
+                        Host = ircdata.Host
+                    };
                     _IrcUsers.Add(who, ircuser);
                 }
 
@@ -2289,9 +2263,7 @@ namespace Meebey.SmartIrc4net
                 }
             }
 
-            if (OnJoin != null) {
-                OnJoin(this, new JoinEventArgs(ircdata, channelname, who));
-            }
+            OnJoin?.Invoke(this, new JoinEventArgs(ircdata, channelname, who));
         }
 
         /// <summary>
@@ -2334,9 +2306,7 @@ namespace Meebey.SmartIrc4net
                 }
             }
 
-            if (OnPart != null) {
-                OnPart(this, new PartEventArgs(ircdata, channel, who, partmessage));
-            }
+            OnPart?.Invoke(this, new PartEventArgs(ircdata, channel, who, partmessage));
         }
 
         /// <summary>
@@ -2376,9 +2346,7 @@ namespace Meebey.SmartIrc4net
                 }
             }
             
-            if (OnKick != null) {
-                OnKick(this, new KickEventArgs(ircdata, channelname, who, whom, reason));
-            }
+            OnKick?.Invoke(this, new KickEventArgs(ircdata, channelname, who, whom, reason));
         }
 
         /// <summary>
@@ -2414,9 +2382,7 @@ namespace Meebey.SmartIrc4net
                 }
             }
 
-            if (OnQuit != null) {
-                OnQuit(this, new QuitEventArgs(ircdata, who, reason));
-            }
+            OnQuit?.Invoke(this, new QuitEventArgs(ircdata, who, reason));
         }
 
         /// <summary>
@@ -2428,9 +2394,7 @@ namespace Meebey.SmartIrc4net
         	
         	switch (ircdata.Type) {
                 case ReceiveType.ChannelMessage:
-                    if (OnChannelMessage != null) {
-                        OnChannelMessage(this, new IrcEventArgs(ircdata));
-                    }
+                    OnChannelMessage?.Invoke(this, new IrcEventArgs(ircdata));
                     break;
                 case ReceiveType.ChannelAction:
                     if (OnChannelAction != null) {
@@ -2439,9 +2403,7 @@ namespace Meebey.SmartIrc4net
                     }
                     break;
                 case ReceiveType.QueryMessage:
-                    if (OnQueryMessage != null) {
-                        OnQueryMessage(this, new IrcEventArgs(ircdata));
-                    }
+                    OnQueryMessage?.Invoke(this, new IrcEventArgs(ircdata));
                     break;
                 case ReceiveType.QueryAction:
                     if (OnQueryAction != null) {
@@ -2451,14 +2413,17 @@ namespace Meebey.SmartIrc4net
                     break;
                 case ReceiveType.CtcpRequest:
                     if (OnCtcpRequest != null) {
-                        int space_pos = ircdata.Message.IndexOf(' '); 
-                        string cmd = "";
+                        int space_pos = ircdata.Message.IndexOf(' ');
+                        string cmd;
                         string param = "";
-                        if (space_pos != -1) {
+                        if (space_pos != -1)
+                        {
                             cmd = ircdata.Message.Substring(1, space_pos - 1);
                             param = ircdata.Message.Substring(space_pos + 1,
                                         ircdata.Message.Length - space_pos - 2);
-                        } else {
+                        }
+                        else
+                        {
                             cmd = ircdata.Message.Substring(1, ircdata.Message.Length - 2);
                         }
                         OnCtcpRequest(this, new CtcpEventArgs(ircdata, cmd, param));
@@ -2475,25 +2440,24 @@ namespace Meebey.SmartIrc4net
         {
             switch (ircdata.Type) {
                 case ReceiveType.ChannelNotice:
-                    if (OnChannelNotice != null) {
-                        OnChannelNotice(this, new IrcEventArgs(ircdata));
-                    }
+                    OnChannelNotice?.Invoke(this, new IrcEventArgs(ircdata));
                     break;
                 case ReceiveType.QueryNotice:
-                    if (OnQueryNotice != null) {
-                        OnQueryNotice(this, new IrcEventArgs(ircdata));
-                    }
+                    OnQueryNotice?.Invoke(this, new IrcEventArgs(ircdata));
                     break;
                 case ReceiveType.CtcpReply:
                     if (OnCtcpReply != null) {
-                        int space_pos = ircdata.Message.IndexOf(' '); 
-                        string cmd = "";
+                        int space_pos = ircdata.Message.IndexOf(' ');
+                        string cmd;
                         string param = "";
-                        if (space_pos != -1) {
+                        if (space_pos != -1)
+                        {
                             cmd = ircdata.Message.Substring(1, space_pos - 1);
                             param = ircdata.Message.Substring(space_pos + 1,
                                         ircdata.Message.Length - space_pos - 2);
-                        } else {
+                        }
+                        else
+                        {
                             cmd = ircdata.Message.Substring(1, ircdata.Message.Length - 2);
                         }
                         OnCtcpReply(this, new CtcpEventArgs(ircdata, cmd, param));
@@ -2520,9 +2484,7 @@ namespace Meebey.SmartIrc4net
 #endif
             }
 
-            if (OnTopicChange != null) {
-                OnTopicChange(this, new TopicChangeEventArgs(ircdata, channel, who, newtopic));
-            }
+            OnTopicChange?.Invoke(this, new TopicChangeEventArgs(ircdata, channel, who, newtopic));
         }
 
         /// <summary>
@@ -2600,9 +2562,7 @@ namespace Meebey.SmartIrc4net
                 }
             }
             
-            if (OnNickChange != null) {
-                OnNickChange(this, new NickChangeEventArgs(ircdata, oldnickname, newnickname));
-            }
+            OnNickChange?.Invoke(this, new NickChangeEventArgs(ircdata, oldnickname, newnickname));
         }
 
         /// <summary>
@@ -2620,9 +2580,7 @@ namespace Meebey.SmartIrc4net
                 }
             }
             
-            if (OnInvite != null) {
-                OnInvite(this, new InviteEventArgs(ircdata, channel, inviter));
-            }
+            OnInvite?.Invoke(this, new InviteEventArgs(ircdata, channel, inviter));
         }
 
         /// <summary>
@@ -2635,9 +2593,7 @@ namespace Meebey.SmartIrc4net
                 // my user mode changed
                 _Usermode = ircdata.RawMessageArray[3].Substring(1);
 
-                if (OnUserModeChange != null) {
-                    OnUserModeChange(this, new IrcEventArgs(ircdata));
-                }
+                OnUserModeChange?.Invoke(this, new IrcEventArgs(ircdata));
             } else {
                 // channel mode changed
                 string mode = ircdata.RawMessageArray[3];
@@ -2647,20 +2603,11 @@ namespace Meebey.SmartIrc4net
                 );
                 _InterpretChannelMode(ircdata, changeInfos);
 
-                if (OnChannelModeChange != null) {
-                    OnChannelModeChange(
-                        this,
-                        new ChannelModeChangeEventArgs(
-                            ircdata, ircdata.Channel, changeInfos
-                        )
-                    );
-                }
+                OnChannelModeChange?.Invoke(this, new ChannelModeChangeEventArgs(ircdata, ircdata.Channel, changeInfos));
             }
             
 
-            if (OnModeChange != null) {
-                OnModeChange(this, new IrcEventArgs(ircdata));
-            }
+            OnModeChange?.Invoke(this, new IrcEventArgs(ircdata));
         }
 
 
@@ -2700,9 +2647,7 @@ namespace Meebey.SmartIrc4net
             // updating our nickname, that we got (maybe cutted...)
             _Nickname = ircdata.RawMessageArray[2];
 
-            if (OnRegistered != null) {
-                OnRegistered(this, EventArgs.Empty);
-            }
+            OnRegistered?.Invoke(this, EventArgs.Empty);
         }
 
         private void _Event_RPL_TOPIC(IrcMessageData ircdata)
@@ -2718,9 +2663,7 @@ namespace Meebey.SmartIrc4net
 #endif
             }
 
-            if (OnTopic != null) {
-                OnTopic(this, new TopicEventArgs(ircdata, channel, topic));
-            }
+            OnTopic?.Invoke(this, new TopicEventArgs(ircdata, channel, topic));
         }
 
         private void _Event_RPL_NOTOPIC(IrcMessageData ircdata)
@@ -2735,9 +2678,7 @@ namespace Meebey.SmartIrc4net
 #endif
             }
 
-            if (OnTopic != null) {
-                OnTopic(this, new TopicEventArgs(ircdata, channel, ""));
-            }
+            OnTopic?.Invoke(this, new TopicEventArgs(ircdata, channel, ""));
         }
 
         private void _Event_RPL_NAMREPLY(IrcMessageData ircdata)
@@ -2774,8 +2715,6 @@ namespace Meebey.SmartIrc4net
                     voice = false;
 
                     nickname = user;
-
-                    char mode;
 
                     foreach (var kvp in _ServerProperties.ChannelPrivilegeModesPrefixes) {
                         if (nickname[0] == kvp.Value) {
@@ -2881,10 +2820,7 @@ namespace Meebey.SmartIrc4net
 
             }
 
-            if (OnNames != null) {
-                OnNames(this, new NamesEventArgs(ircdata, channelname,
-                                                 filteredUserlist.ToArray(), userlist));
-            }
+            OnNames?.Invoke(this, new NamesEventArgs(ircdata, channelname, filteredUserlist.ToArray(), userlist));
         }
         
         private void _Event_RPL_LIST(IrcMessageData ircdata)
@@ -2898,28 +2834,24 @@ namespace Meebey.SmartIrc4net
                 info = new ChannelInfo(channelName, userCount, topic);
             }
             
-            if (_ChannelList != null) {
-                _ChannelList.Add(info);
-            }
+            _ChannelList?.Add(info);
             
-            if (OnList != null) {
-                OnList(this, new ListEventArgs(ircdata, info));
-            }
+            OnList?.Invoke(this, new ListEventArgs(ircdata, info));
         }
         
+#pragma warning disable IDE0060 // Part of a pattern
         private void _Event_RPL_LISTEND(IrcMessageData ircdata)
         {
-            if (_ChannelListReceivedEvent != null) {
-                _ChannelListReceivedEvent.Set();
-            }
+            _ChannelListReceivedEvent?.Set();
         }
+#pragma warning restore IDE0060 // Remove unused parameter
         
+#pragma warning disable IDE0060 // Part of a pattern
         private void _Event_RPL_TRYAGAIN(IrcMessageData ircdata)
         {
-            if (_ChannelListReceivedEvent != null) {
-                _ChannelListReceivedEvent.Set();
-            }
+            _ChannelListReceivedEvent?.Set();
         }
+#pragma warning restore IDE0060 // Remove unused parameter
         
         /*
         // BUG: RFC2812 says LIST and WHO might return ERR_TOOMANYMATCHES which
@@ -2940,9 +2872,7 @@ namespace Meebey.SmartIrc4net
 #if LOG4NET
                 Logger.ChannelSyncing.Debug("passive synced: "+channelname);
 #endif
-                if (OnChannelPassiveSynced != null) {
-                    OnChannelPassiveSynced(this, new IrcEventArgs(ircdata));
-                }
+                OnChannelPassiveSynced?.Invoke(this, new IrcEventArgs(ircdata));
             }
         }
 
@@ -2961,27 +2891,21 @@ namespace Meebey.SmartIrc4net
                 }
             }
 
-            if (OnAway != null) {
-                OnAway(this, new AwayEventArgs(ircdata, who, awaymessage));
-            }
+            OnAway?.Invoke(this, new AwayEventArgs(ircdata, who, awaymessage));
         }
         
         private void _Event_RPL_UNAWAY(IrcMessageData ircdata)
         {
             _IsAway = false;
             
-            if (OnUnAway != null) {
-                OnUnAway(this, new IrcEventArgs(ircdata));
-            }
+            OnUnAway?.Invoke(this, new IrcEventArgs(ircdata));
         }
 
         private void _Event_RPL_NOWAWAY(IrcMessageData ircdata)
         {
             _IsAway = true;
 
-            if (OnNowAway != null) {
-                OnNowAway(this, new IrcEventArgs(ircdata));
-            }
+            OnNowAway?.Invoke(this, new IrcEventArgs(ircdata));
         }
 
         private void _Event_RPL_WHOREPLY(IrcMessageData ircdata)
@@ -2990,9 +2914,7 @@ namespace Meebey.SmartIrc4net
             string channel = info.Channel;
             string nick = info.Nick;
             
-            if (_WhoList != null) {
-                _WhoList.Add(info);
-            }
+            _WhoList?.Add(info);
             
             if (ActiveChannelSyncing &&
                 IsJoined(channel)) {
@@ -3045,17 +2967,15 @@ namespace Meebey.SmartIrc4net
                 }
             }
             
-            if (OnWho != null) {
-                OnWho(this, new WhoEventArgs(ircdata, info));
-            }
+            OnWho?.Invoke(this, new WhoEventArgs(ircdata, info));
         }
         
+#pragma warning disable IDE0060 // Part of a pattern
         private void _Event_RPL_ENDOFWHO(IrcMessageData ircdata)
         {
-            if (_WhoListReceivedEvent != null) {
-                _WhoListReceivedEvent.Set();
-            }
+            _WhoListReceivedEvent?.Set();
         }
+#pragma warning restore IDE0060 // Remove unused parameter
         
         private void _Event_RPL_MOTD(IrcMessageData ircdata)
         {
@@ -3063,24 +2983,22 @@ namespace Meebey.SmartIrc4net
                 _Motd.Add(ircdata.Message);
             }
             
-            if (OnMotd != null) {
-                OnMotd(this, new MotdEventArgs(ircdata, ircdata.Message));
-            }
+            OnMotd?.Invoke(this, new MotdEventArgs(ircdata, ircdata.Message));
         }
         
+#pragma warning disable IDE0060 // Part of a pattern
         private void _Event_RPL_ENDOFMOTD(IrcMessageData ircdata)
         {
             _MotdReceived = true;
         }
+#pragma warning restore IDE0060 // Remove unused parameter
         
         private void _Event_RPL_BANLIST(IrcMessageData ircdata)
         {
             string channelname = ircdata.Channel;
             
             BanInfo info = BanInfo.Parse(ircdata);            
-            if (_BanList != null) {
-                _BanList.Add(info);
-            }
+            _BanList?.Add(info);
             
             if (ActiveChannelSyncing &&
                 IsJoined(channelname)) {
@@ -3097,9 +3015,7 @@ namespace Meebey.SmartIrc4net
         {
             string channelname = ircdata.Channel;
             
-            if (_BanListReceivedEvent != null) {
-                _BanListReceivedEvent.Set();
-            }
+            _BanListReceivedEvent?.Set();
             
             if (ActiveChannelSyncing &&
                 IsJoined(channelname)) {
@@ -3115,9 +3031,7 @@ namespace Meebey.SmartIrc4net
                 Logger.ChannelSyncing.Debug("active synced: "+channelname+
                     " (in "+channel.ActiveSyncTime.TotalSeconds+" sec)");
 #endif
-                if (OnChannelActiveSynced != null) {
-                    OnChannelActiveSynced(this, new IrcEventArgs(ircdata));
-                }
+                OnChannelActiveSynced?.Invoke(this, new IrcEventArgs(ircdata));
             }
         }
         
@@ -3126,9 +3040,7 @@ namespace Meebey.SmartIrc4net
             string channelname = ircdata.Channel;
 
             BanInfo info = BanInfo.Parse(ircdata);
-            if (_BanExceptList != null) {
-                _BanExceptList.Add(info);
-            }
+            _BanExceptList?.Add(info);
 
             if (ActiveChannelSyncing &&
                 IsJoined(channelname)) {
@@ -3141,23 +3053,21 @@ namespace Meebey.SmartIrc4net
             }
         }
 
+#pragma warning disable IDE0060 // Part of a pattern
         private void _Event_RPL_ENDOFEXCEPTLIST(IrcMessageData ircdata)
         {
-            string channelname = ircdata.Channel;
+            // string channelname = ircdata.Channel;
 
-            if (_BanExceptListReceivedEvent != null) {
-                _BanExceptListReceivedEvent.Set();
-            }
+            _BanExceptListReceivedEvent?.Set();
         }
+#pragma warning restore IDE0060 // Remove unused parameter
 
         private void _Event_RPL_INVITELIST(IrcMessageData ircdata)
         {
             string channelname = ircdata.Channel;
 
             BanInfo info = BanInfo.Parse(ircdata);
-            if (_InviteExceptList != null) {
-                _InviteExceptList.Add(info);
-            }
+            _InviteExceptList?.Add(info);
 
             if (ActiveChannelSyncing &&
                 IsJoined(channelname)) {
@@ -3170,14 +3080,14 @@ namespace Meebey.SmartIrc4net
             }
         }
 
+#pragma warning disable IDE0060 // Part of a pattern
         private void _Event_RPL_ENDOFINVITELIST(IrcMessageData ircdata)
         {
-            string channelname = ircdata.Channel;
+            // string channelname = ircdata.Channel;
 
-            if (_InviteExceptListReceivedEvent != null) {
-                _InviteExceptListReceivedEvent.Set();
-            }
+            _InviteExceptListReceivedEvent?.Set();
         }
+#pragma warning restore IDE0060 // Remove unused parameter
 
         // MODE +b might return ERR_NOCHANMODES for mode-less channels (like +chan) 
         private void _Event_ERR_NOCHANMODES(IrcMessageData ircdata)
@@ -3197,17 +3107,13 @@ namespace Meebey.SmartIrc4net
                 Logger.ChannelSyncing.Debug("active synced: "+channelname+
                     " (in "+channel.ActiveSyncTime.TotalSeconds+" sec)");
 #endif
-                if (OnChannelActiveSynced != null) {
-                    OnChannelActiveSynced(this, new IrcEventArgs(ircdata));
-                }
+                OnChannelActiveSynced?.Invoke(this, new IrcEventArgs(ircdata));
             }
         }
         
         private void _Event_ERR(IrcMessageData ircdata)
         {
-            if (OnErrorMessage != null) {
-                OnErrorMessage(this, new IrcEventArgs(ircdata));
-            }
+            OnErrorMessage?.Invoke(this, new IrcEventArgs(ircdata));
         }
         
         private void _Event_ERR_NICKNAMEINUSE(IrcMessageData ircdata)
@@ -3252,9 +3158,7 @@ namespace Meebey.SmartIrc4net
                     port = int.Parse(match.Groups [2].Value);
                 }
 
-                if (OnBounce != null) {
-                    OnBounce(this, new BounceEventArgs(ircdata, host, port));
-                }
+                OnBounce?.Invoke(this, new BounceEventArgs(ircdata, host, port));
                 return;
             }
 
@@ -3270,6 +3174,20 @@ namespace Meebey.SmartIrc4net
                 WriteLine("PROTOCTL NAMESX", Priority.Critical);
             }
         }
-#endregion
+
+        public override bool Equals(object obj)
+        {
+            return obj is IrcClient client &&
+                   EqualityComparer<object>.Default.Equals(_BanListSyncRoot, client._BanListSyncRoot);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return -1424568596 + EqualityComparer<object>.Default.GetHashCode(_BanListSyncRoot);
+            }
+        }
+        #endregion
     }
 }

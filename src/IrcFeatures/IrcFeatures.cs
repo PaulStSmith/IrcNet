@@ -120,52 +120,52 @@ namespace Meebey.SmartIrc4net
         #region Public DCC Events (Global: All Dcc Events)
         public event DccConnectionHandler OnDccChatRequestEvent;
         public void DccChatRequestEvent(DccEventArgs e) {
-            if (OnDccChatRequestEvent!=null) {OnDccChatRequestEvent(this, e); }
+            OnDccChatRequestEvent?.Invoke(this, e);
         }
 
         public event DccSendRequestHandler OnDccSendRequestEvent;
         public void DccSendRequestEvent(DccSendRequestEventArgs e) {
-            if (OnDccSendRequestEvent!=null) {OnDccSendRequestEvent(this, e); }
+            OnDccSendRequestEvent?.Invoke(this, e);
         }
         
         public event DccConnectionHandler OnDccChatStartEvent;
         public void DccChatStartEvent(DccEventArgs e) {
-            if (OnDccChatStartEvent!=null) {OnDccChatStartEvent(this, e); }
+            OnDccChatStartEvent?.Invoke(this, e);
         }
 
         public event DccConnectionHandler OnDccSendStartEvent;
         public void DccSendStartEvent(DccEventArgs e) {
-            if (OnDccSendStartEvent!=null) {OnDccSendStartEvent(this, e); }
+            OnDccSendStartEvent?.Invoke(this, e);
         }
         
         public event DccChatLineHandler OnDccChatReceiveLineEvent;
         public void DccChatReceiveLineEvent(DccChatEventArgs e) {
-            if (OnDccChatReceiveLineEvent!=null) {OnDccChatReceiveLineEvent(this, e); }
+            OnDccChatReceiveLineEvent?.Invoke(this, e);
         }
 
         public event DccSendPacketHandler OnDccSendReceiveBlockEvent;
         public void DccSendReceiveBlockEvent(DccSendEventArgs e) {
-            if (OnDccSendReceiveBlockEvent!=null) {OnDccSendReceiveBlockEvent(this, e); }
+            OnDccSendReceiveBlockEvent?.Invoke(this, e);
         }
 
         public event DccChatLineHandler OnDccChatSentLineEvent;
         public void DccChatSentLineEvent(DccChatEventArgs e) {
-            if (OnDccChatSentLineEvent!=null) {OnDccChatSentLineEvent(this, e); }
+            OnDccChatSentLineEvent?.Invoke(this, e);
         }
 
         public event DccSendPacketHandler OnDccSendSentBlockEvent;
         internal void DccSendSentBlockEvent(DccSendEventArgs e) {
-            if (OnDccSendSentBlockEvent!=null) {OnDccSendSentBlockEvent(this, e); }
+            OnDccSendSentBlockEvent?.Invoke(this, e);
         }
 
         public event DccConnectionHandler OnDccChatStopEvent;
         public void DccChatStopEvent(DccEventArgs e) {
-            if (OnDccChatStopEvent!=null) {OnDccChatStopEvent(this, e); }
+            OnDccChatStopEvent?.Invoke(this, e);
         }
 
         public event DccConnectionHandler OnDccSendStopEvent;
         public void DccSendStopEvent(DccEventArgs e) {
-            if (OnDccSendStopEvent!=null) {OnDccSendStopEvent(this, e); }
+            OnDccSendStopEvent?.Invoke(this, e);
         }
 
         #endregion
@@ -382,7 +382,7 @@ namespace Meebey.SmartIrc4net
                             long session = -1;
                             long.TryParse(FilterMarker(e.Data.MessageArray[6]), out session);
                             foreach(DccConnection dc in _DccConnections) {                            
-                                if(dc.isSession(session)) {
+                                if(dc.IsSession(session)) {
                                     ((DccSend)dc).SetRemote(e);
                                     ((DccSend)dc).AcceptRequest(null, 0);
                                        return;

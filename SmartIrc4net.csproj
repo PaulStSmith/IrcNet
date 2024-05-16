@@ -43,6 +43,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="src\AssemblyInfo.cs" />
     <Compile Include="src\Logger.cs" />
     <Compile Include="src\Consts.cs" />
@@ -97,5 +98,13 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="src\AssemblyInfo.cs.in" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="RFCs\RFC1459.txt" />
+    <Content Include="RFCs\RFC2810.txt" />
+    <Content Include="RFCs\RFC2811.txt" />
+    <Content Include="RFCs\RFC2812.txt" />
+    <Content Include="RFCs\RFC2813.txt" />
+    <Content Include="RFCs\RFC7194.txt" />
   </ItemGroup>
 </Project>

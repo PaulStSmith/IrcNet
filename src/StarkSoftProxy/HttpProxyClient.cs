@@ -392,8 +392,7 @@ namespace Starksoft.Net.Proxy
 
         private void CreateAsyncWorker()
         {
-            if (_asyncWorker != null)
-                _asyncWorker.Dispose();
+            _asyncWorker?.Dispose();
             _asyncException = null;
             _asyncWorker = null;
             _asyncCancelled = false;
@@ -449,8 +448,7 @@ namespace Starksoft.Net.Proxy
 
         private void CreateConnectionAsync_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (CreateConnectionAsyncCompleted != null)
-                CreateConnectionAsyncCompleted(this, new CreateConnectionAsyncCompletedEventArgs(_asyncException, _asyncCancelled, (TcpClient)e.Result));
+            CreateConnectionAsyncCompleted?.Invoke(this, new CreateConnectionAsyncCompletedEventArgs(_asyncException, _asyncCancelled, (TcpClient)e.Result));
         }
 
 

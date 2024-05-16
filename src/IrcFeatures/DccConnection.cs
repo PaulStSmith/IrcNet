@@ -93,61 +93,61 @@ namespace Meebey.SmartIrc4net
         #region Public DCC Events
         public event DccConnectionHandler OnDccChatRequestEvent;
         protected virtual void DccChatRequestEvent(DccEventArgs e) {
-            if (OnDccChatRequestEvent!=null) {OnDccChatRequestEvent(this, e); }
+            OnDccChatRequestEvent?.Invoke(this, e);
               Irc.DccChatRequestEvent(e);
         }
 
         public event DccSendRequestHandler OnDccSendRequestEvent;
         protected virtual void DccSendRequestEvent(DccSendRequestEventArgs e) {
-            if (OnDccSendRequestEvent!=null) {OnDccSendRequestEvent(this, e); }
+            OnDccSendRequestEvent?.Invoke(this, e);
               Irc.DccSendRequestEvent(e);
         }
         
         public event DccConnectionHandler OnDccChatStartEvent;
         protected virtual void DccChatStartEvent(DccEventArgs e) {
-            if (OnDccChatStartEvent!=null) {OnDccChatStartEvent(this, e); }
+            OnDccChatStartEvent?.Invoke(this, e);
               Irc.DccChatStartEvent(e);
         }
 
         public event DccConnectionHandler OnDccSendStartEvent;
         protected virtual void DccSendStartEvent(DccEventArgs e) {
-            if (OnDccSendStartEvent!=null) {OnDccSendStartEvent(this, e); }
+            OnDccSendStartEvent?.Invoke(this, e);   
             Irc.DccSendStartEvent(e);
         }
         
         public event DccChatLineHandler OnDccChatReceiveLineEvent;
         protected virtual void DccChatReceiveLineEvent(DccChatEventArgs e) {
-            if (OnDccChatReceiveLineEvent!=null) {OnDccChatReceiveLineEvent(this, e); }
+            OnDccChatReceiveLineEvent?.Invoke(this, e);
             Irc.DccChatReceiveLineEvent(e);
         }
 
         public event DccSendPacketHandler OnDccSendReceiveBlockEvent;
         protected virtual void DccSendReceiveBlockEvent(DccSendEventArgs e) {
-            if (OnDccSendReceiveBlockEvent!=null) {OnDccSendReceiveBlockEvent(this, e); }
+            OnDccSendReceiveBlockEvent?.Invoke(this, e);
             Irc.DccSendReceiveBlockEvent(e); 
         }
 
         public event DccChatLineHandler OnDccChatSentLineEvent;
         protected virtual void DccChatSentLineEvent(DccChatEventArgs e) {
-            if (OnDccChatSentLineEvent!=null) {OnDccChatSentLineEvent(this, e); }
+            OnDccChatSentLineEvent?.Invoke(this, e);
             Irc.DccChatSentLineEvent(e); 
         }
 
         public event DccSendPacketHandler OnDccSendSentBlockEvent;
         protected virtual void DccSendSentBlockEvent(DccSendEventArgs e) {
-            if (OnDccSendSentBlockEvent!=null) {OnDccSendSentBlockEvent(this, e); }
+            OnDccSendSentBlockEvent?.Invoke(this, e);
             Irc.DccSendSentBlockEvent(e); 
         }
 
         public event DccConnectionHandler OnDccChatStopEvent;
         protected virtual void DccChatStopEvent(DccEventArgs e) {
-            if (OnDccChatStopEvent!=null) {OnDccChatStopEvent(this, e); }
+            OnDccChatStopEvent?.Invoke(this, e);
             Irc.DccChatStopEvent(e); 
         }
 
         public event DccConnectionHandler OnDccSendStopEvent;
         protected virtual void DccSendStopEvent(DccEventArgs e) {
-            if (OnDccSendStopEvent!=null) {OnDccSendStopEvent(this, e); }
+            OnDccSendStopEvent?.Invoke(this, e);
             Irc.DccSendStopEvent(e); 
         }
         #endregion
@@ -165,7 +165,7 @@ namespace Meebey.SmartIrc4net
             throw new NotSupportedException();
         }
     
-        internal bool isSession(long session)
+        internal bool IsSession(long session)
         {
             return (session == this.session);
         }
@@ -190,15 +190,18 @@ namespace Meebey.SmartIrc4net
             return "DCC Session " + session + " of " + this.GetType().ToString() + " is " + ((isConnected)?"connected to "+RemoteEndPoint.Address.ToString():"not connected") + "[" + this.User + "]";
         }
         #endregion
-        
+
         #region protected Helper Functions
         protected long HostToDccInt(IPAddress ip)
         {
-            long temp = (ip.Address & 0xff) << 24;
-            temp |= (ip.Address & 0xff00)  << 8;
-            temp |= (ip.Address >> 8)  & 0xff00;
-            temp |= (ip.Address >> 24)  & 0xff;
+#pragma warning disable CS0618 // HostToDccInt is IPv4 dependent
+            var addr = ip.Address;
+            long temp = (addr & 0xff) << 24;
+            temp |= (addr & 0xff00)  << 8;
+            temp |= (addr >> 8)  & 0xff00;
+            temp |= (addr >> 24)  & 0xff;
             return temp;
+#pragma warning restore CS0618 // IPAddress.Address is obsolete
         }
         
         protected string DccIntToHost(long ip)
@@ -209,7 +212,7 @@ namespace Meebey.SmartIrc4net
             return ipparts[3] + "." + ipparts[2] + "." + ipparts[1] + "." + ipparts[0];
         }
         
-        protected byte[] getAck(long SentBytes)
+        protected byte[] GetAck(long SentBytes)
         {
             byte[] acks = new byte[4];
             acks[0] = (byte)((SentBytes >>24 ) % 256);

@@ -160,7 +160,7 @@ namespace Meebey.SmartIrc4net
                     _File.Write(_Buffer, 0, bytes);
                     _SentBytes += bytes;
                     if (_Speed != DccSpeed.Turbo)
-                        Connection.GetStream().Write(getAck(_SentBytes),0,4);
+                        Connection.GetStream().Write(GetAck(_SentBytes),0,4);
                     
                     DccSendReceiveBlockEvent(new DccSendEventArgs(this, _Buffer, bytes));
                 }        

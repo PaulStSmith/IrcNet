@@ -575,9 +575,7 @@ namespace Meebey.SmartIrc4net
             _AddressList = (string[])addresslist.Clone();
             _Port = port;
 
-            if (OnConnecting != null) {
-                OnConnecting(this, EventArgs.Empty);
-            }
+            OnConnecting?.Invoke(this, EventArgs.Empty);
             try {
                 _TcpClient = new TcpClient();
                 _TcpClient.NoDelay = true;
@@ -709,9 +707,7 @@ namespace Meebey.SmartIrc4net
 #if LOG4NET
                 Logger.Connection.Info("connected");
 #endif
-                if (OnConnected != null) {
-                    OnConnected(this, EventArgs.Empty);
-                }
+                OnConnected?.Invoke(this, EventArgs.Empty);
             } catch (AuthenticationException ex) {
 #if LOG4NET
                 Logger.Connection.Error("Connect(): Exception", ex);
@@ -730,9 +726,7 @@ namespace Meebey.SmartIrc4net
                     } catch (ObjectDisposedException) {
                     }
                 }
-                if (_TcpClient != null) {
-                    _TcpClient.Close();
-                }
+                _TcpClient?.Close();
                 _IsConnected = false;
                 IsConnectionError = true;
                 
@@ -748,9 +742,7 @@ namespace Meebey.SmartIrc4net
                     (_AutoRetryLimit == -1 ||
                      _AutoRetryLimit == 0 ||
                      _AutoRetryLimit <= _AutoRetryAttempt)) {
-                    if (OnAutoConnectError != null) {
-                        OnAutoConnectError(this, new AutoConnectErrorEventArgs(Address, Port, e));
-                    }
+                    OnAutoConnectError?.Invoke(this, new AutoConnectErrorEventArgs(Address, Port, e));
 #if LOG4NET
                     Logger.Connection.Debug("delaying new connect attempt for "+_AutoRetryDelay+" sec");
 #endif
@@ -810,10 +802,8 @@ namespace Meebey.SmartIrc4net
 #if LOG4NET
             Logger.Connection.Info("disconnecting...");
 #endif
-            if (OnDisconnecting != null) {
-                OnDisconnecting(this, EventArgs.Empty);
-            }
-            
+            OnDisconnecting?.Invoke(this, EventArgs.Empty);
+
             IsDisconnecting = true;
             
             _IdleWorkerThread.Stop();
@@ -827,10 +817,8 @@ namespace Meebey.SmartIrc4net
             _ReadThread.QueuedEvent.Set();
             
             IsDisconnecting = false;
-            
-            if (OnDisconnected != null) {
-                OnDisconnected(this, EventArgs.Empty);
-            }
+
+            OnDisconnected?.Invoke(this, EventArgs.Empty);
 
 #if LOG4NET
             Logger.Connection.Info("disconnected");
@@ -905,9 +893,7 @@ namespace Meebey.SmartIrc4net
 #if LOG4NET
                 Logger.Queue.Debug("read: \""+data+"\"");
 #endif
-                if (OnReadLine != null) {
-                    OnReadLine(this, new ReadLineEventArgs(data));
-                }
+                OnReadLine?.Invoke(this, new ReadLineEventArgs(data));
             }
 
             if (IsConnectionError &&
@@ -972,9 +958,7 @@ namespace Meebey.SmartIrc4net
 #if LOG4NET
                 Logger.Socket.Debug("sent: \""+data+"\"");
 #endif
-                if (OnWriteLine != null) {
-                    OnWriteLine(this, new WriteLineEventArgs(data));
-                }
+                OnWriteLine?.Invoke(this, new WriteLineEventArgs(data));
                 return true;
             }
 
