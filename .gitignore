@@ -19,3 +19,11 @@ smartirc4net.pc
 *.suo
 *.user
 *.sln.docstates
+/.vs/SmartIrc4net/FileContentIndex
+/examples/benchmark/.vs
+/examples/stresstest/.vs
+/examples/test/.vs
+/packages
+/src/StarkSoftProxy/.vs
+/tests/.vs
+/.vs
