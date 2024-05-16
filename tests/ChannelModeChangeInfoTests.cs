@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Meebey.SmartIrc4net
 {
@@ -34,14 +35,14 @@ namespace Meebey.SmartIrc4net
             ChannelModeChangeInfo changeInfo;
 
             changeInfos = ChannelModeChangeInfo.Parse(modeMap, "#test", "+o", "meebey");
-            Assert.IsNotNull(changeInfos);
-            Assert.AreEqual(1, changeInfos.Count);
+            ClassicAssert.IsNotNull(changeInfos);
+            ClassicAssert.AreEqual(1, changeInfos.Count);
 
             changeInfo = changeInfos[0];
-            Assert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
-            Assert.AreEqual(ChannelMode.Op, changeInfo.Mode);
-            Assert.AreEqual('o', changeInfo.ModeChar);
-            Assert.AreEqual("meebey", changeInfo.Parameter);
+            ClassicAssert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
+            ClassicAssert.AreEqual(ChannelMode.Op, changeInfo.Mode);
+            ClassicAssert.AreEqual('o', changeInfo.ModeChar);
+            ClassicAssert.AreEqual("meebey", changeInfo.Parameter);
         }
 
         [Test]
@@ -52,20 +53,20 @@ namespace Meebey.SmartIrc4net
             ChannelModeChangeInfo changeInfo;
 
             changeInfos = ChannelModeChangeInfo.Parse(modeMap, "#test", "+nt", "");
-            Assert.IsNotNull(changeInfos);
-            Assert.AreEqual(2, changeInfos.Count);
+            ClassicAssert.IsNotNull(changeInfos);
+            ClassicAssert.AreEqual(2, changeInfos.Count);
 
             changeInfo = changeInfos[0];
-            Assert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
-            Assert.AreEqual(ChannelMode.Unknown, changeInfo.Mode);
-            Assert.AreEqual('n', changeInfo.ModeChar);
-            Assert.AreEqual(null, changeInfo.Parameter);
+            ClassicAssert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
+            ClassicAssert.AreEqual(ChannelMode.Unknown, changeInfo.Mode);
+            ClassicAssert.AreEqual('n', changeInfo.ModeChar);
+            ClassicAssert.AreEqual(null, changeInfo.Parameter);
 
             changeInfo = changeInfos[1];
-            Assert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
-            Assert.AreEqual(ChannelMode.TopicLock, changeInfo.Mode);
-            Assert.AreEqual('t', changeInfo.ModeChar);
-            Assert.AreEqual(null, changeInfo.Parameter);
+            ClassicAssert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
+            ClassicAssert.AreEqual(ChannelMode.TopicLock, changeInfo.Mode);
+            ClassicAssert.AreEqual('t', changeInfo.ModeChar);
+            ClassicAssert.AreEqual(null, changeInfo.Parameter);
         }
 
         [Test]
@@ -76,32 +77,32 @@ namespace Meebey.SmartIrc4net
             ChannelModeChangeInfo changeInfo;
 
             changeInfos = ChannelModeChangeInfo.Parse(modeMap, "#test", "-l+o-k+v", "op_nick * voice_nick");
-            Assert.IsNotNull(changeInfos);
-            Assert.AreEqual(4, changeInfos.Count);
+            ClassicAssert.IsNotNull(changeInfos);
+            ClassicAssert.AreEqual(4, changeInfos.Count);
 
             changeInfo = changeInfos[0];
-            Assert.AreEqual(ChannelModeChangeAction.Unset, changeInfo.Action);
-            Assert.AreEqual(ChannelMode.UserLimit, changeInfo.Mode);
-            Assert.AreEqual('l', changeInfo.ModeChar);
-            Assert.AreEqual(null, changeInfo.Parameter);
+            ClassicAssert.AreEqual(ChannelModeChangeAction.Unset, changeInfo.Action);
+            ClassicAssert.AreEqual(ChannelMode.UserLimit, changeInfo.Mode);
+            ClassicAssert.AreEqual('l', changeInfo.ModeChar);
+            ClassicAssert.AreEqual(null, changeInfo.Parameter);
 
             changeInfo = changeInfos[1];
-            Assert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
-            Assert.AreEqual(ChannelMode.Op, changeInfo.Mode);
-            Assert.AreEqual('o', changeInfo.ModeChar);
-            Assert.AreEqual("op_nick", changeInfo.Parameter);
+            ClassicAssert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
+            ClassicAssert.AreEqual(ChannelMode.Op, changeInfo.Mode);
+            ClassicAssert.AreEqual('o', changeInfo.ModeChar);
+            ClassicAssert.AreEqual("op_nick", changeInfo.Parameter);
 
             changeInfo = changeInfos[2];
-            Assert.AreEqual(ChannelModeChangeAction.Unset, changeInfo.Action);
-            Assert.AreEqual(ChannelMode.Key, changeInfo.Mode);
-            Assert.AreEqual('k', changeInfo.ModeChar);
-            Assert.AreEqual("*", changeInfo.Parameter);
+            ClassicAssert.AreEqual(ChannelModeChangeAction.Unset, changeInfo.Action);
+            ClassicAssert.AreEqual(ChannelMode.Key, changeInfo.Mode);
+            ClassicAssert.AreEqual('k', changeInfo.ModeChar);
+            ClassicAssert.AreEqual("*", changeInfo.Parameter);
 
             changeInfo = changeInfos[3];
-            Assert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
-            Assert.AreEqual(ChannelMode.Voice, changeInfo.Mode);
-            Assert.AreEqual('v', changeInfo.ModeChar);
-            Assert.AreEqual("voice_nick", changeInfo.Parameter);
+            ClassicAssert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
+            ClassicAssert.AreEqual(ChannelMode.Voice, changeInfo.Mode);
+            ClassicAssert.AreEqual('v', changeInfo.ModeChar);
+            ClassicAssert.AreEqual("voice_nick", changeInfo.Parameter);
         }
 
         [Test]
@@ -112,20 +113,20 @@ namespace Meebey.SmartIrc4net
             ChannelModeChangeInfo changeInfo;
 
             changeInfos = ChannelModeChangeInfo.Parse(modeMap, "#test", "+X-Y", "foo bar");
-            Assert.IsNotNull(changeInfos);
-            Assert.AreEqual(2, changeInfos.Count);
+            ClassicAssert.IsNotNull(changeInfos);
+            ClassicAssert.AreEqual(2, changeInfos.Count);
 
             changeInfo = changeInfos[0];
-            Assert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
-            Assert.AreEqual(ChannelMode.Unknown, changeInfo.Mode);
-            Assert.AreEqual('X', changeInfo.ModeChar);
-            Assert.AreEqual("foo", changeInfo.Parameter);
+            ClassicAssert.AreEqual(ChannelModeChangeAction.Set, changeInfo.Action);
+            ClassicAssert.AreEqual(ChannelMode.Unknown, changeInfo.Mode);
+            ClassicAssert.AreEqual('X', changeInfo.ModeChar);
+            ClassicAssert.AreEqual("foo", changeInfo.Parameter);
 
             changeInfo = changeInfos[1];
-            Assert.AreEqual(ChannelModeChangeAction.Unset, changeInfo.Action);
-            Assert.AreEqual(ChannelMode.Unknown, changeInfo.Mode);
-            Assert.AreEqual('Y', changeInfo.ModeChar);
-            Assert.AreEqual("bar", changeInfo.Parameter);
+            ClassicAssert.AreEqual(ChannelModeChangeAction.Unset, changeInfo.Action);
+            ClassicAssert.AreEqual(ChannelMode.Unknown, changeInfo.Mode);
+            ClassicAssert.AreEqual('Y', changeInfo.ModeChar);
+            ClassicAssert.AreEqual("bar", changeInfo.Parameter);
         }
     }
 }

@@ -19,6 +19,7 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 using System;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Meebey.SmartIrc4net
 {
@@ -31,46 +32,46 @@ namespace Meebey.SmartIrc4net
             var rawline = ":irc.example.com 005 meebey3 CALLERID CASEMAPPING=rfc1459 DEAF=D KICKLEN=160 MODES=4 NICKLEN=30 PREFIX=(ov)@+ STATUSMSG=@+ TOPICLEN=390 NETWORK=EFnet MAXLIST=beI:25 MAXTARGETS=4 CHANTYPES=#& :are supported by this server";
             var props = new ServerProperties();
             props.ParseFromRawMessage(rawline.Split(' '));
-            Assert.AreEqual(13, props.RawProperties.Count);
-            Assert.IsTrue(props.RawProperties.ContainsKey("CALLERID"));
-            Assert.AreEqual(null, props.RawProperties["CALLERID"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("CASEMAPPING"));
-            Assert.AreEqual("rfc1459", props.RawProperties["CASEMAPPING"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("DEAF"));
-            Assert.AreEqual("D", props.RawProperties["DEAF"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("KICKLEN"));
-            Assert.AreEqual("160", props.RawProperties["KICKLEN"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("MODES"));
-            Assert.AreEqual("4", props.RawProperties["MODES"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("NICKLEN"));
-            Assert.AreEqual("30", props.RawProperties["NICKLEN"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("PREFIX"));
-            Assert.AreEqual("(ov)@+", props.RawProperties["PREFIX"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("STATUSMSG"));
-            Assert.AreEqual("@+", props.RawProperties["STATUSMSG"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("TOPICLEN"));
-            Assert.AreEqual("390", props.RawProperties["TOPICLEN"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("NETWORK"));
-            Assert.AreEqual("EFnet", props.RawProperties["NETWORK"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("MAXLIST"));
-            Assert.AreEqual("beI:25", props.RawProperties["MAXLIST"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("MAXTARGETS"));
-            Assert.AreEqual("4", props.RawProperties["MAXTARGETS"]);
-            Assert.IsTrue(props.RawProperties.ContainsKey("CHANTYPES"));
-            Assert.AreEqual("#&", props.RawProperties["CHANTYPES"]);
+            ClassicAssert.AreEqual(13, props.RawProperties.Count);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("CALLERID"));
+            ClassicAssert.AreEqual(null, props.RawProperties["CALLERID"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("CASEMAPPING"));
+            ClassicAssert.AreEqual("rfc1459", props.RawProperties["CASEMAPPING"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("DEAF"));
+            ClassicAssert.AreEqual("D", props.RawProperties["DEAF"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("KICKLEN"));
+            ClassicAssert.AreEqual("160", props.RawProperties["KICKLEN"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("MODES"));
+            ClassicAssert.AreEqual("4", props.RawProperties["MODES"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("NICKLEN"));
+            ClassicAssert.AreEqual("30", props.RawProperties["NICKLEN"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("PREFIX"));
+            ClassicAssert.AreEqual("(ov)@+", props.RawProperties["PREFIX"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("STATUSMSG"));
+            ClassicAssert.AreEqual("@+", props.RawProperties["STATUSMSG"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("TOPICLEN"));
+            ClassicAssert.AreEqual("390", props.RawProperties["TOPICLEN"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("NETWORK"));
+            ClassicAssert.AreEqual("EFnet", props.RawProperties["NETWORK"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("MAXLIST"));
+            ClassicAssert.AreEqual("beI:25", props.RawProperties["MAXLIST"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("MAXTARGETS"));
+            ClassicAssert.AreEqual("4", props.RawProperties["MAXTARGETS"]);
+            ClassicAssert.IsTrue(props.RawProperties.ContainsKey("CHANTYPES"));
+            ClassicAssert.AreEqual("#&", props.RawProperties["CHANTYPES"]);
 
             rawline = ":irc.example.com 005 meebey3 CHANLIMIT=#&:25 CHANNELLEN=50 CHANMODES=eIb,k,l,imnpstMRS KNOCK ELIST=CMNTU SAFELIST AWAYLEN=160 EXCEPTS=e INVEX=I :are supported by this server";
             props.ParseFromRawMessage(rawline.Split(' '));
-            Assert.AreEqual(13+9, props.RawProperties.Count);
-            Assert.AreEqual("#&:25", props.RawProperties["CHANLIMIT"]);
-            Assert.AreEqual("50", props.RawProperties["CHANNELLEN"]);
-            Assert.AreEqual("eIb,k,l,imnpstMRS", props.RawProperties["CHANMODES"]);
-            Assert.AreEqual(null, props.RawProperties["KNOCK"]);
-            Assert.AreEqual("CMNTU", props.RawProperties["ELIST"]);
-            Assert.AreEqual(null, props.RawProperties["SAFELIST"]);
-            Assert.AreEqual("160", props.RawProperties["AWAYLEN"]);
-            Assert.AreEqual("e", props.RawProperties["EXCEPTS"]);
-            Assert.AreEqual("I", props.RawProperties["INVEX"]);
+            ClassicAssert.AreEqual(13+9, props.RawProperties.Count);
+            ClassicAssert.AreEqual("#&:25", props.RawProperties["CHANLIMIT"]);
+            ClassicAssert.AreEqual("50", props.RawProperties["CHANNELLEN"]);
+            ClassicAssert.AreEqual("eIb,k,l,imnpstMRS", props.RawProperties["CHANMODES"]);
+            ClassicAssert.AreEqual(null, props.RawProperties["KNOCK"]);
+            ClassicAssert.AreEqual("CMNTU", props.RawProperties["ELIST"]);
+            ClassicAssert.AreEqual(null, props.RawProperties["SAFELIST"]);
+            ClassicAssert.AreEqual("160", props.RawProperties["AWAYLEN"]);
+            ClassicAssert.AreEqual("e", props.RawProperties["EXCEPTS"]);
+            ClassicAssert.AreEqual("I", props.RawProperties["INVEX"]);
         }
     }
 }
