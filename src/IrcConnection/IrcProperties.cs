@@ -36,13 +36,9 @@ using System.Net.Sockets;
 
 namespace Meebey.SmartIrc4net
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <threadsafety static="true" instance="true" />
     /*
-    public class IrcProperties
-    {
-    }
-    */
+     * public class IrcProperties
+     * {
+     * }
+     */
 }

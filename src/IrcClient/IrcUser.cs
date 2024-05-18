@@ -31,185 +31,84 @@ using System.Collections.Specialized;
 namespace Meebey.SmartIrc4net
 {
     /// <summary>
-    /// This class manages the user information.
+    /// Represents an IRC user.
     /// </summary>
-    /// <remarks>
-    /// only used with channel sync
-    /// <seealso cref="IrcClient.ActiveChannelSyncing">
-    ///   IrcClient.ActiveChannelSyncing
-    /// </seealso>
-    /// </remarks>
-    /// <threadsafety static="true" instance="true" />
     public class IrcUser
     {
-        private IrcClient _IrcClient;
-        private string    _Nick     = null;
-        private string    _Ident    = null;
-        private string    _Host     = null;
-        private string    _Realname = null;
-        private bool      _IsIrcOp  = false;
-        private bool      _IsRegistered = false;
-        private bool      _IsAway   = false;
-        private string    _Server   = null;
-        private int       _HopCount = -1;
+        private readonly IrcClient _IrcClient;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IrcUser"/> class.
+        /// </summary>
+        /// <param name="nickname">The nickname of the user.</param>
+        /// <param name="ircclient">The IRC client that the user is connected to.</param>
         internal IrcUser(string nickname, IrcClient ircclient)
         {
             _IrcClient = ircclient;
-            _Nick      = nickname;
+            Nick = nickname;
         }
-
-#if LOG4NET
-        ~IrcUser()
-        {
-            Logger.ChannelSyncing.Debug("IrcUser ("+Nick+") destroyed");
-        }
-#endif
 
         /// <summary>
         /// Gets or sets the nickname of the user.
         /// </summary>
-        /// <remarks>
-        /// Do _not_ set this value, it will break channel sync!
-        /// </remarks>
-        public string Nick {
-            get {
-                return _Nick;
-            }
-            set {
-                _Nick = value;
-            }
-        }
+        public string Nick { get; set; } = null;
 
         /// <summary>
-        /// Gets or sets the identity (username) of the user which is used by some IRC networks for authentication. 
+        /// Gets or sets the ident of the user.
         /// </summary>
-        /// <remarks>
-        /// Do _not_ set this value, it will break channel sync!
-        /// </remarks>
-        public string Ident {
-            get {
-                return _Ident;
-            }
-            set {
-                _Ident = value;
-            }
-        }
+        public string Ident { get; set; } = null;
 
         /// <summary>
-        /// Gets or sets the hostname of the user. 
+        /// Gets or sets the host of the user.
         /// </summary>
-        /// <remarks>
-        /// Do _not_ set this value, it will break channel sync!
-        /// </remarks>
-        public string Host {
-            get {
-                return _Host;
-            }
-            set {
-                _Host = value;
-            }
-        }
+        public string Host { get; set; } = null;
 
         /// <summary>
-        /// Gets or sets the supposed real name of the user.
+        /// Gets or sets the real name of the user.
         /// </summary>
-        /// <remarks>
-        /// Do _not_ set this value, it will break channel sync!
-        /// </remarks>
-        public string Realname {
-            get {
-                return _Realname;
-            }
-            set {
-                _Realname = value;
-            }
-        }
+        public string Realname { get; set; } = null;
 
         /// <summary>
-        /// Gets or sets the server operator status of the user
+        /// Gets or sets a value indicating whether the user is an IRC operator.
         /// </summary>
-        /// <remarks>
-        /// Do _not_ set this value, it will break channel sync!
-        /// </remarks>
-        public bool IsIrcOp {
-            get {
-                return _IsIrcOp;
-            }
-            set {
-                _IsIrcOp = value;
-            }
-        }
+        public bool IsIrcOp { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets the registered status of the user
+        /// Gets or sets a value indicating whether the user is registered.
         /// </summary>
-        public bool IsRegistered {
-            get {
-                return _IsRegistered;
-            }
-            internal set {
-                _IsRegistered = value;
-            }
-        }
+        public bool IsRegistered { get; internal set; } = false;
 
         /// <summary>
-        /// Gets or sets away status of the user
+        /// Gets or sets a value indicating whether the user is away.
         /// </summary>
-        /// <remarks>
-        /// Do _not_ set this value, it will break channel sync!
-        /// </remarks>
-        public bool IsAway {
-            get {
-                return _IsAway;
-            }
-            set {
-                _IsAway = value;
-            }
-        }
+        public bool IsAway { get; set; } = false;
 
         /// <summary>
-        /// Gets or sets the server the user is connected to
+        /// Gets or sets the server of the user.
         /// </summary>
-        /// <remarks>
-        /// Do _not_ set this value, it will break channel sync!
-        /// </remarks>
-        public string Server {
-            get {
-                return _Server;
-            }
-            set {
-                _Server = value;
-            }
-        }
+        public string Server { get; set; } = null;
 
         /// <summary>
-        /// Gets or sets the count of hops between you and the user's server
+        /// Gets or sets the hop count of the user.
         /// </summary>
-        /// <remarks>
-        /// Do _not_ set this value, it will break channel sync!
-        /// </remarks>
-        public int HopCount {
-            get {
-                return _HopCount;
-            }
-            set {
-                _HopCount = value;
-            }
-        }
+        public int HopCount { get; set; } = -1;
 
         /// <summary>
-        /// Gets the list of channels the user has joined
+        /// Gets the channels that the user has joined.
         /// </summary>
-        public string[] JoinedChannels {
-            get {
-                Channel          channel;
-                string[]         result;
-                string[]         channels       = _IrcClient.GetChannels();
-                StringCollection joinedchannels = new StringCollection();
-                foreach (string channelname in channels) {
+        public string[] JoinedChannels
+        {
+            get
+            {
+                Channel channel;
+                string[] result;
+                var channels = _IrcClient.GetChannels();
+                var joinedchannels = new StringCollection();
+                foreach (var channelname in channels)
+                {
                     channel = _IrcClient.GetChannel(channelname);
-                    if (channel.UnsafeUsers.ContainsKey(_Nick)) {
+                    if (channel.UnsafeUsers.ContainsKey(Nick))
+                    {
                         joinedchannels.Add(channelname);
                     }
                 }

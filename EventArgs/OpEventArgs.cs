@@ -1,4 +1,4 @@
-/*
+﻿/*
  * $Id$
  * $URL$
  * $Rev$
@@ -26,31 +26,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-using System;
-using System.Collections.Specialized;
-
 namespace Meebey.SmartIrc4net
 {
     /// <summary>
-    ///
+    /// Represents the arguments for an event that occurs when a user's operator status changes in a channel.
     /// </summary>
-    /// <threadsafety static="true" instance="true" />
-    public class IrcEventArgs : EventArgs
+    public class OpEventArgs : ChannelRoleChangeEventArgs
     {
-        private readonly IrcMessageData _Data;
-        
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="OpEventArgs"/> class.
         /// </summary>
-        public IrcMessageData Data {
-            get {
-                return _Data;
-            }
-        }
-         
-        internal IrcEventArgs(IrcMessageData data)
-        {
-            _Data = data;
-        }
+        /// <param name="data">The IRC message data.</param>
+        /// <param name="channel">The channel where the operator status change occurred.</param>
+        /// <param name="who">The user who initiated the operator status change.</param>
+        /// <param name="whom">The user whose operator status was changed.</param>
+        internal OpEventArgs(IrcMessageData data, string channel, string who, string whom) : base(data, channel, who, whom) { }
     }
 }

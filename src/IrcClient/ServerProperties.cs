@@ -26,31 +26,30 @@ using System.Collections.Generic;
 namespace Meebey.SmartIrc4net
 {
     /// <summary>
-    /// This class stores information about the capabilities and idiosyncrasies
-    /// of an IRC server.
-    /// See http://tools.ietf.org/html/draft-hardy-irc-isupport-00 for more
-    /// information.
+    /// Represents the properties of an IRC server.
     /// </summary>
     public class ServerProperties
     {
         /// <summary>
-        /// Contains the properties as returned by the server. If a property has
-        /// been specified without a value, it is mapped to null.
+        /// Gets the raw properties of the server.
         /// </summary>
         public Dictionary<string, string> RawProperties { get; internal set; }
 
         /// <summary>
-        /// Stores how the server maps between uppercase and lowercase letters.
-        /// (raw property <c>CASEMAPPING</c>)
+        /// Gets the case mapping type used by the server.
         /// </summary>
-        public CaseMappingType CaseMapping {
-            get {
-                if (!HaveNonNullKey("CASEMAPPING")) {
+        public CaseMappingType CaseMapping
+        {
+            get
+            {
+                if (!HaveNonNullKey("CASEMAPPING"))
+                {
                     // default is rfc1459
                     return CaseMappingType.Rfc1459;
                 }
 
-                switch (RawProperties ["CASEMAPPING"]) {
+                switch (RawProperties["CASEMAPPING"])
+                {
                     case "ascii":
                         return CaseMappingType.Ascii;
                     case "rfc1459":
@@ -64,152 +63,150 @@ namespace Meebey.SmartIrc4net
         }
 
         /// <summary>
-        /// Stores how many channels of a given type a user can join.
-        /// A return value of null means none were supplied or the
-        /// value was invalid. The key is a string of channel types
-        /// which count towards the same total; a value of -1 means
-        /// an infinite amount.
-        /// (raw property <c>CHANLIMIT</c>)
+        /// Gets the channel join limits of the server.
         /// </summary>
-        public IDictionary<string, int> ChannelJoinLimits {
-            get {
-                return ParseStringNumberPairs("CHANLIMIT", null, null, -1);
+        public IDictionary<string, int> ChannelJoinLimits
+        {
+            get
+            {
+                return ParseStringNumberPairs("CHANLIMIT", null, null);
             }
         }
 
         /// <summary>
-        /// Stores the channel modes which store lists. When a
-        /// change is sent by the server, it will always contain a
-        /// parameter; when sent by a client without a parameter,
-        /// the server will reply with the current list. A return
-        /// value of null means none or invalid ones were supplied.
-        /// (raw property <c>CHANMODES</c>, first value)
+        /// Gets the list channel modes of the server.
         /// </summary>
-        public string ListChannelModes {
-            get {
+        public string ListChannelModes
+        {
+            get
+            {
                 var splitmodes = SplitChannelModes;
-                if (splitmodes == null) {
+                if (splitmodes == null)
+                {
                     return null;
                 }
-                return splitmodes [0];
+                return splitmodes[0];
             }
         }
 
         /// <summary>
-        /// Stores the channel modes which store a parameter. This
-        /// parameter must be provided both when adding and when
-        /// removing the mode.
-        /// (raw property <c>CHANMODES</c>, second value)
+        /// Gets the parametric channel modes of the server.
         /// </summary>
-        public string ParametricChannelModes {
-            get {
+        public string ParametricChannelModes
+        {
+            get
+            {
                 var splitmodes = SplitChannelModes;
-                if (splitmodes == null) {
+                if (splitmodes == null)
+                {
                     return null;
                 }
-                return splitmodes [1];
+                return splitmodes[1];
             }
         }
 
         /// <summary>
-        /// Stores the channel modes which store a parameter. This
-        /// parameter must only be provided when adding the value.
-        /// (raw property <c>CHANMODES</c>, third value)
+        /// Gets the set parametric channel modes of the server.
         /// </summary>
-        public string SetParametricChannelModes {
-            get {
+        public string SetParametricChannelModes
+        {
+            get
+            {
                 var splitmodes = SplitChannelModes;
-                if (splitmodes == null) {
+                if (splitmodes == null)
+                {
                     return null;
                 }
-                return splitmodes [2];
+                return splitmodes[2];
             }
         }
 
         /// <summary>
-        /// Stores the channel modes which don't store a parameter.
-        /// (raw property <c>CHANMODES</c>, fourth value)
+        /// Gets the parameterless channel modes of the server.
         /// </summary>
-        public string ParameterlessChannelModes {
-            get {
+        public string ParameterlessChannelModes
+        {
+            get
+            {
                 var splitmodes = SplitChannelModes;
-                if (splitmodes == null) {
+                if (splitmodes == null)
+                {
                     return null;
                 }
-                return splitmodes [3];
+                return splitmodes[3];
             }
         }
 
         /// <summary>
-        /// Stores the maximum length of a channel name. -1 means no limit.
-        /// (raw property <c>CHANNELLEN</c>)
+        /// Gets the maximum length of a channel name on the server.
         /// </summary>
-        public int ChannelNameLength {
-            get {
+        public int ChannelNameLength
+        {
+            get
+            {
                 // defaults as specified by RFC1459
-                int? len = ParseNumber("CHANNELLEN", 200, 200);
+                var len = ParseNumber("CHANNELLEN", 200, 200);
                 return len ?? -1;
             }
         }
 
         /// <summary>
-        /// Stores the types of channels supported by the server.
-        /// An empty string means no channels are supported (!).
-        /// (raw property <c>CHANTYPES</c>)
+        /// Gets the channel types supported by the server.
         /// </summary>
-        public char[] ChannelTypes {
-            get {
-                if (!HaveNonNullKey("CHANTYPES")) {
+        public char[] ChannelTypes
+        {
+            get
+            {
+                if (!HaveNonNullKey("CHANTYPES"))
+                {
                     // sane default
                     return "#&".ToCharArray();
                 }
 
-                return RawProperties ["CHANTYPES"].ToCharArray();
+                return RawProperties["CHANTYPES"].ToCharArray();
             }
         }
 
         /// <summary>
-        /// Stores whether the server supports the CNOTICE command,
-        /// which allows users with a specific channel privilege to
-        /// send a notice to another participant in that channel
-        /// without some of the restrictions that the sever may have
-        /// placed on NOTICE.
-        /// (raw property <c>CNOTICE</c>)
+        /// Gets a value indicating whether the server supports channel participant notices.
         /// </summary>
-        public bool SupportsChannelParticipantNotices {
-            get {
+        public bool SupportsChannelParticipantNotices
+        {
+            get
+            {
                 return RawProperties.ContainsKey("CNOTICE");
             }
         }
 
         /// <summary>
-        /// Stores whether the server supports the CPRIVMSG command,
-        /// which allows users with a specific channel privilege to
-        /// send a message to another participant in that channel
-        /// without some of the restrictions that the sever may have
-        /// placed on PRIVMSG.
-        /// (raw property <c>CPRIVMSG</c>)
+        /// Gets a value indicating whether the server supports channel participant private messages.
         /// </summary>
-        public bool SupportsChannelParticipantPrivMsgs {
-            get {
+        public bool SupportsChannelParticipantPrivMsgs
+        {
+            get
+            {
                 return RawProperties.ContainsKey("CPRIVMSG");
             }
         }
 
         /// <summary>
-        /// Stores available extensions to the LIST command.
-        /// (raw property <c>ELIST</c>)
+        /// Gets the list extensions supported by the server.
         /// </summary>
-        public ListExtensions ListExtensions {
-            get {
-                if (!HaveNonNullKey("ELIST")) {
+        public ListExtensions ListExtensions
+        {
+            get
+            {
+                if (!HaveNonNullKey("ELIST"))
+                {
                     return ListExtensions.None;
                 }
 
-                var eliststr = RawProperties ["ELIST"];
+                var eliststr = RawProperties["ELIST"];
                 var exts = ListExtensions.None;
-                foreach (char e in eliststr.ToUpperInvariant()) {
-                    switch (e) {
+                foreach (var e in eliststr.ToUpperInvariant())
+                {
+                    switch (e)
+                    {
                         case 'C':
                             exts |= ListExtensions.CreationTime;
                             break;
@@ -233,237 +230,222 @@ namespace Meebey.SmartIrc4net
         }
 
         /// <summary>
-        /// Returns what channel mode character is used by the
-        /// server to signify ban exceptions. null means the server
-        /// does not support ban exceptions.
-        /// (raw property <c>EXCEPTS</c>)
+        /// Gets the character used for ban exceptions on the server.
         /// </summary>
-        public char? BanExceptionCharacter {
-            get {
-                if (!RawProperties.ContainsKey("EXCEPTS")) {
+        public char? BanExceptionCharacter
+        {
+            get
+            {
+                if (!RawProperties.ContainsKey("EXCEPTS"))
+                {
                     return null;
                 }
 
-                var exstr = RawProperties ["EXCEPTS"];
-                if (exstr == null) {
+                var exstr = RawProperties["EXCEPTS"];
+                if (exstr == null)
+                {
                     // default: +e
                     return 'e';
-                } else if (exstr.Length != 1) {
+                }
+                else if (exstr.Length != 1)
+                {
                     // invalid; assume lack of support
                     return null;
                 }
-                return exstr [0];
+                return exstr[0];
             }
         }
 
         /// <summary>
-        /// Returns what channel mode character is used by the
-        /// server to signify invite exceptions. null means the server
-        /// does not support ban exceptions.
-        /// (raw property <c>INVEX</c>)
+        /// Gets the character used for invite exceptions on the server.
         /// </summary>
-        public char? InviteExceptionCharacter {
-            get {
-                if (!RawProperties.ContainsKey("INVEX")) {
+        public char? InviteExceptionCharacter
+        {
+            get
+            {
+                if (!RawProperties.ContainsKey("INVEX"))
+                {
                     return null;
                 }
 
-                var exstr = RawProperties ["INVEX"];
-                if (exstr == null) {
+                var exstr = RawProperties["INVEX"];
+                if (exstr == null)
+                {
                     // default: +I
                     return 'I';
-                } else if (exstr.Length != 1) {
+                }
+                else if (exstr.Length != 1)
+                {
                     // invalid; assume lack of support
                     return null;
                 }
-                return exstr [0];
+                return exstr[0];
             }
         }
 
         /// <summary>
-        /// Returns how long a kick message supplied by the client
-        /// may be.
-        /// (raw property <c>KICKLEN</c>)
+        /// Gets the maximum length of a kick message on the server.
         /// </summary>
-        public int? KickMessageLength {
-            get {
+        public int? KickMessageLength
+        {
+            get
+            {
                 return ParseNumber("KICKLEN", null, null);
             }
         }
 
         /// <summary>
-        /// Stores how many list channel modes (see ListChannelModes)
-        /// of a given type a user can set on a channel. (Note that
-        /// the server may always return more.) A return value of null
-        /// means none were supplied or the value was invalid. The key
-        /// is a string of list mode characters which count towards the
-        /// same total; a value of -1 means an infinite amount.
-        /// (raw property <c>MAXLIST</c>)
+        /// Gets the list mode limits of the server.
         /// </summary>
-        public IDictionary<string, int> ListModeLimits {
-            get {
-                return ParseStringNumberPairs("MAXLIST", null, null, -1);
+        public IDictionary<string, int> ListModeLimits
+        {
+            get
+            {
+                return ParseStringNumberPairs("MAXLIST", null, null);
             }
         }
 
         /// <summary>
-        /// Stores how many non-parameterless (list, parametric or
-        /// set-parametric) modes can be set using a single MODE call.
-        /// A return value of null means an invalid value has been
-        /// supplied; a return value of -1 means a theoretically
-        /// unlimited number of simultaneous mode sets.
-        /// (raw property <c>MODES</c>)
+        /// Gets the maximum number of parametric mode sets on the server.
         /// </summary>
-        public int? MaxParametricModeSets {
-            get {
+        public int? MaxParametricModeSets
+        {
+            get
+            {
                 // 3 if not set, infinity if value-less
                 return ParseNumber("MODES", 3, -1);
             }
         }
 
         /// <summary>
-        /// Stores the display name of the network the IRC
-        /// server is participating in. A return value of null
-        /// means the server is not participating in an IRC network.
-        /// (raw property <c>NETWORK</c>)
+        /// Gets the name of the network that the server belongs to.
         /// </summary>
-        public string NetworkName {
-            get {
-                if (!HaveNonNullKey("NETWORK")) {
+        public string NetworkName
+        {
+            get
+            {
+                if (!HaveNonNullKey("NETWORK"))
+                {
                     return null;
                 }
-                return RawProperties ["NETWORK"];
+                return RawProperties["NETWORK"];
             }
         }
 
         /// <summary>
-        /// Stores the maximum length of the nickname the client
-        /// may set. (This has no bearing on the nicknames of
-        /// other clients.) A return value of null means no or an
-        /// invalid value was specified.
-        /// (raw property <c>NICKLEN</c>)
+        /// Gets the maximum length of a nickname on the server.
         /// </summary>
-        public int? MaxNicknameLength {
-            get {
+        public int? MaxNicknameLength
+        {
+            get
+            {
                 // RFC1459 default if unset
                 return ParseNumber("NICKLEN", 9, null);
             }
         }
 
         /// <summary>
-        /// Stores the channel privilege modes (e.g. o for op, v for
-        /// voice) and their corresponding prefixes (e.g. @, +),
-        /// ordered from most to least powerful. A return value of
-        /// null means no or an invalid value was specified.
-        /// (raw property <c>PREFIX</c>)
+        /// Gets the channel privilege modes prefixes of the server.
         /// </summary>
-        public IList<KeyValuePair<char, char>> ChannelPrivilegeModesPrefixes {
-            get {
+        public IList<KeyValuePair<char, char>> ChannelPrivilegeModesPrefixes
+        {
+            get
+            {
                 var modesList = new List<KeyValuePair<char, char>>();
 
-                if (!RawProperties.ContainsKey("PREFIX")) {
+                if (!RawProperties.ContainsKey("PREFIX"))
+                {
                     // assume voice and ops
                     modesList.Add(new KeyValuePair<char, char>('o', '@'));
                     modesList.Add(new KeyValuePair<char, char>('v', '+'));
                     return modesList;
                 }
-                var prefixstr = RawProperties ["PREFIX"];
-                if (prefixstr == null) {
+                var prefixstr = RawProperties["PREFIX"];
+                if (prefixstr == null)
                     // supports no modes (!)
                     return modesList;
-                }
 
                 // format: (modes)prefixes
-                if (prefixstr [0] != '(') {
+                if (prefixstr[0] != '(')
                     return null;
-                }
 
                 var modesPrefixes = prefixstr.Substring(1).Split(')');
-                if (modesPrefixes.Length != 2) {
+                if (modesPrefixes.Length != 2)
                     // assuming the pathological case of a ')' mode
                     // character is impossible, this is invalid
                     return null;
-                }
+
                 var modes = modesPrefixes[0];
                 var prefixes = modesPrefixes[1];
-                if (modes.Length != prefixes.Length) {
+                if (modes.Length != prefixes.Length)
                     return null;
-                }
-                for (int i = 0; i < modes.Length; ++i) {
-                    modesList.Add(new KeyValuePair<char, char>(modes [i], prefixes [i]));
-                }
+
+                for (var i = 0; i < modes.Length; ++i)
+                    modesList.Add(new KeyValuePair<char, char>(modes[i], prefixes[i]));
 
                 return modesList;
             }
         }
 
         /// <summary>
-        /// Stores whether using the LIST command is safe, i.e. whether
-        /// the user won't be disconnected because of the large amount
-        /// of traffic generated by LIST.
-        /// (raw property <c>SAFELIST</c>)
+        /// Gets a value indicating whether the LIST command is safe on the server.
         /// </summary>
-        public bool ListIsSafe {
-            get {
+        public bool ListIsSafe
+        {
+            get
+            {
                 return RawProperties.ContainsKey("SAFELIST");
             }
         }
 
         /// <summary>
-        /// Stores the maximum number of entries on a user's silence
-        /// list. A value of 0 means silence lists are not supported
-        /// on this server.
-        /// (raw property <c>SILENCE</c>)
+        /// Gets the maximum number of entries in the silence list on the server.
         /// </summary>
-        public int MaxSilenceListEntries {
-            get {
+        public int MaxSilenceListEntries
+        {
+            get
+            {
                 // SILENCE requires a value, but assume 0 if unspecified
                 return ParseNumber("SILENCE", 0, 0) ?? 0;
             }
         }
 
         /// <summary>
-        /// If this property is not set to an empty string, users may
-        /// send NOTICEs to channel participants of a given status;
-        /// e.g. <c>NOTICE @#help :I found a bug.</c> would send the
-        /// message to the operators of #help. The property stores the
-        /// modes that may be the recipients of such messages, e.g.
-        /// "~&@" for "owners, admins and operators only".
-        /// (raw property <c>STATUSMSG</c>)
+        /// Gets the participants that can receive status notices on the server.
         /// </summary>
-        public string StatusNoticeParticipants {
-            get {
-                if (!HaveNonNullKey("STATUSMSG")) {
+        public string StatusNoticeParticipants
+        {
+            get
+            {
+                if (!HaveNonNullKey("STATUSMSG"))
+                {
                     // STATUSMSG requires a value, but assume none
                     // if unspecified
                     return "";
                 }
-                return RawProperties ["STATUSMSG"];
+                return RawProperties["STATUSMSG"];
             }
         }
 
         /// <summary>
-        /// Maps the commands which support multiple targets to the
-        /// maximum number of targets each of them supports. A return
-        /// value of null means the server specified an invalid value.
-        /// An entry value of -1 means infinity.
-        /// (raw property <c>TARGMAX</c>)
+        /// Gets the maximum number of targets for each command on the server.
         /// </summary>
-        public IDictionary<string, int> MaxCommandTargets {
-            get {
+        public IDictionary<string, int> MaxCommandTargets
+        {
+            get
+            {
                 var emptydict = new Dictionary<string, int>();
-                return ParseStringNumberPairs("TARGMAX", emptydict, null, -1);
+                return ParseStringNumberPairs("TARGMAX", emptydict, null);
             }
         }
 
         /// <summary>
-        /// Stores the maximum topic length that the client may set
-        /// on a channel on the server. A length of -1 means an
-        /// infinite length.
-        /// (raw property <c>TOPICLEN</c>)
+        /// Gets the maximum length of a topic on the server.
         /// </summary>
-        public int MaxTopicLength {
-            get {
+        public int MaxTopicLength
+        {
+            get
+            {
                 // SILENCE requires a value, but assume infinity
                 // if unspecified or invalid
                 return ParseNumber("TOPICLEN", -1, -1) ?? -1;
@@ -471,146 +453,154 @@ namespace Meebey.SmartIrc4net
         }
 
         /// <summary>
-        /// Stores the maximum number of entries on a user's watch
-        /// list. A value of 0 means watch lists are not supported
-        /// on this server.
-        /// (raw property <c>WATCH</c>)
+        /// Gets the maximum number of entries in the watch list on the server.
         /// </summary>
-        public int MaxWatchListEntries {
-            get {
+        public int MaxWatchListEntries
+        {
+            get
+            {
                 // SILENCE requires a value, but assume 0 if unspecified
                 return ParseNumber("WATCH", 0, 0) ?? 0;
             }
         }
 
         /// <summary>
-        /// Constructs an empty server properties object.
+        /// Initializes a new instance of the <see cref="ServerProperties"/> class.
         /// </summary>
         internal ServerProperties()
         {
             RawProperties = new Dictionary<string, string>();
         }
 
+        /// <summary>
+        /// Parses the properties from a raw message.
+        /// </summary>
+        /// <param name="rawMessage">The raw message to parse the properties from.</param>
         internal void ParseFromRawMessage(string[] rawMessage)
         {
             // split the message (0 = server, 1 = code, 2 = my nick)
-            for (int i = 3; i < rawMessage.Length; ++i) {
-                var msg = rawMessage [i];
-                if (msg.StartsWith(":")) {
+            for (var i = 3; i < rawMessage.Length; ++i)
+            {
+                var msg = rawMessage[i];
+                if (msg.StartsWith(":"))
+                {
                     // addendum; we're done
                     break;
                 }
 
                 var keyval = msg.Split('=');
-                if (keyval.Length == 1) {
+                if (keyval.Length == 1)
+                {
                     // keyword only
-                    RawProperties [keyval [0]] = null;
-                } else if (keyval.Length == 2) {
+                    RawProperties[keyval[0]] = null;
+                }
+                else if (keyval.Length == 2)
+                {
                     // key and value
-                    RawProperties [keyval [0]] = keyval [1];
-                } else {
-#if LOG4NET
-                    Logger.Connection.Warn("confusing ISUPPORT message, ignoring: " + msg);
-#endif
+                    RawProperties[keyval[0]] = keyval[1];
                 }
             }
         }
 
         /// <summary>
-        /// Returns whether the property dictionary contains the given key and
-        /// it is not null.
+        /// Checks if a key has a non-null value in the raw properties.
         /// </summary>
         /// <param name="key">The key to check.</param>
-        /// <returns>Whether the given key maps to a non-null value in the
-        /// dictionary.</returns>
+        /// <returns>true if the key has a non-null value; otherwise, false.</returns>
         bool HaveNonNullKey(string key)
         {
-            if (!RawProperties.ContainsKey(key)) {
+            if (!RawProperties.ContainsKey(key))
+            {
                 return false;
             }
-            return RawProperties [key] != null;
+            return RawProperties[key] != null;
         }
 
         /// <summary>
-        /// Returns a dictionary from parsing a value in the format
-        /// string:number[,string:number,...]. If the value is unset (i.e. not
-        /// contained in the dictionary), returns unsetDefault. If the value is
-        /// empty (i.e. maps to null), returns emptyDefault.
-        /// defaultValue is used if no number is specified after a colon; if
-        /// defaultValue is null, this method returns null.
+        /// Parses pairs of strings and numbers from the raw properties.
         /// </summary>
-        IDictionary<string, int> ParseStringNumberPairs(string key, IDictionary<string, int> unsetDefault, IDictionary<string, int> emptyDefault, int? defaultValue)
+        /// <param name="key">The key to parse the pairs from.</param>
+        /// <param name="unsetDefault">The default value to return if the key is not set.</param>
+        /// <param name="emptyDefault">The default value to return if the key is set but its value is empty.</param>
+        /// <returns>A dictionary of the parsed pairs.</returns>
+        IDictionary<string, int> ParseStringNumberPairs(string key, IDictionary<string, int> unsetDefault, IDictionary<string, int> emptyDefault)
         {
-            if (!RawProperties.ContainsKey(key)) {
+            if (!RawProperties.ContainsKey(key))
+            {
                 return unsetDefault;
             }
 
-            var valstr = RawProperties [key];
-            if (valstr == null) {
+            var valstr = RawProperties[key];
+            if (valstr == null)
+            {
                 return emptyDefault;
             }
 
             var valmap = new Dictionary<string, int>();
             // comma splits the specs
-            foreach (string limit in valstr.Split(',')) {
+            foreach (var limit in valstr.Split(','))
+            {
                 // colon splits keys and value
                 var split = limit.Split(':');
-                if (split.Length != 2) {
+                if (split.Length != 2)
+                {
                     // invalid spec; don't trust the whole thing
                     return null;
                 }
-                var chantypes = split [0];
-                var valuestr = split [1];
+                var chantypes = split[0];
+                var valuestr = split[1];
                 int value;
-                if (valuestr == string.Empty) {
-                    if (defaultValue.HasValue) {
-                        value = defaultValue.Value;
-                    }
+                if (valuestr == string.Empty)
                     return null;
-                } else if (!int.TryParse(valuestr, out value)) {
+                else if (!int.TryParse(valuestr, out value))
                     // invalid integer; don't trust the whole thing
                     return null;
-                }
 
-                valmap [chantypes] = value;
+                valmap[chantypes] = value;
             }
 
             return valmap;
         }
 
         /// <summary>
-        /// Returns a numeric value. If the value is unset (i.e. not contained
-        /// in the dictionary), returns unsetDefault. If the value is empty
-        /// (i.e. maps to null), returns emptyDefault. On parse failure, returns
-        /// null. Otherwise, returns the parsed value.
+        /// Parses a number from the raw properties.
         /// </summary>
+        /// <param name="key">The key to parse the number from.</param>
+        /// <param name="unsetDefault">The default value to return if the key is not set.</param>
+        /// <param name="emptyDefault">The default value to return if the key is set but its value is empty.</param>
+        /// <returns>The parsed number, or the default value if the key is not set or its value is empty.</returns>
         int? ParseNumber(string key, int? unsetDefault, int? emptyDefault)
         {
-            if (!RawProperties.ContainsKey(key)) {
+            if (!RawProperties.ContainsKey(key))
+            {
                 return unsetDefault;
             }
-            var numstr = RawProperties [key];
-            if (numstr == null) {
+            var numstr = RawProperties[key];
+            if (numstr == null)
+            {
                 return emptyDefault;
             }
-            int num;
-            if (!int.TryParse(numstr, out num)) {
+            if (!int.TryParse(numstr, out var num))
+            {
                 return null;
             }
             return num;
         }
 
         /// <summary>
-        /// Returns the array value of the CHANMODES property, or null if
-        /// it was invalid.
+        /// Splits the channel modes from the raw properties.
         /// </summary>
-        string[] SplitChannelModes {
-            get {
-                if (!HaveNonNullKey("CHANMODES")) {
+        string[] SplitChannelModes
+        {
+            get
+            {
+                if (!HaveNonNullKey("CHANMODES"))
+                {
                     return null;
                 }
-                var splits = RawProperties ["CHANMODES"].Split(',');
-                if (splits.Length != 4) {
+                var splits = RawProperties["CHANMODES"].Split(',');
+                if (splits.Length != 4)
+                {
                     return null;
                 }
                 return splits;
@@ -619,87 +609,64 @@ namespace Meebey.SmartIrc4net
     }
 
     /// <summary>
-    /// Represents how lowercase and uppercase are mapped by the server. This
-    /// information is mostly supplied in the CASEMAPPING server property.
+    /// Represents the case mapping type used by the IRC server.
     /// </summary>
     public enum CaseMappingType
     {
         /// <summary>
-        /// The server provided no or an unknown value.
+        /// The case mapping type is unknown.
         /// </summary>
         Unknown,
 
         /// <summary>
-        /// The ASCII characters 0x61 to 0x7a (<c>a</c> to <c>z</c>) are defined
-        /// as the lowercase variants of 0x41 to 0x5a (<c>A</c> to <c>Z</c>).
-        /// The server provided the string <c>ascii</c>.
+        /// The ASCII case mapping type.
         /// </summary>
         Ascii,
 
         /// <summary>
-        /// The ASCII characters 0x61 to 0x7e (<c>a</c> to <c>~</c>) are defined
-        /// as the lowercase variants of 0x41 to 0x5e (<c>A</c> to <c>^</c>).
-        /// The server provided the string <c>rfc1459</c>.
+        /// The RFC1459 case mapping type.
         /// </summary>
         Rfc1459,
 
         /// <summary>
-        /// The ASCII characters 0x61 to 0x7d (<c>a</c> to <c>}</c>) are defined
-        /// as the lowercase variants of 0x41 to 0x5d (<c>A</c> to <c>]</c>).
-        /// The server provided the string <c>strict-rfc1459</c>.
+        /// The strict RFC1459 case mapping type.
         /// </summary>
         StrictRfc1459,
     }
 
     /// <summary>
-    /// Represents additional functionality available in the LIST command.
+    /// Represents the extensions for the LIST command in IRC.
     /// </summary>
     [Flags]
     public enum ListExtensions
     {
         /// <summary>
-        /// No additional functionality is supported by LIST.
+        /// No extensions are used.
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// Channel lists may be requested by creation time, using the syntax
-        /// <c>C&gt;time</c> to search for channels created after the given time
-        /// and <c>C&lt;time</c> to search for channels created before the given
-        /// time.
-        /// (letter: <c>C</c>)
+        /// The creation time of the channel is included in the LIST command.
         /// </summary>
         CreationTime = (1 << 0),
 
         /// <summary>
-        /// Channel lists may be requested by a mask, matching channels in which
-        /// a user matching the given mask is participating.
-        /// (letter: <c>M</c>)
+        /// The LIST command includes channels that contain a participant with a certain mask.
         /// </summary>
         ContainsParticipantWithMask = (1 << 1),
 
         /// <summary>
-        /// Channel lists may be requested by a mask, matching channels in which
-        /// a user matching the given mask is not participating.
-        /// (letter: <c>N</c>)
+        /// The LIST command includes channels that do not contain a participant with a certain mask.
         /// </summary>
         DoesNotContainParticipantWithMask = (1 << 2),
 
         /// <summary>
-        /// Channel lists may be requested by topic age, using the syntax
-        /// <c>T&gt;time</c> to search for channels with topics last changed after
-        /// the given time and <c>T&lt;time</c> to search for channels with topics
-        /// last changed before the given time.
-        /// (letter: <c>T</c>)
+        /// The age of the topic is included in the LIST command.
         /// </summary>
         TopicAge = (1 << 3),
 
         /// <summary>
-        /// Channel lists may be requested by number of participants, using the
-        /// syntax <c>U&gt;count</c> to search for channels with more than the given
-        /// number of participants and <c>C&lt;time</c> to search for channels with
-        /// fewer than the given number of participants.
-        /// (letter: <c>U</c>)
+        /// The count of participants is included in the LIST command.
         /// </summary>
         ParticipantCount = (1 << 4)
     }

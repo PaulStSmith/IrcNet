@@ -31,33 +31,36 @@ using System;
 
 namespace Meebey.SmartIrc4net
 {
+    /// <summary>
+    /// Stores information about a ban.
+    /// </summary>
     public class BanInfo
     {
-        private string   f_Channel;
-        private string   f_Mask;
-        
-        public string Channel {
-            get {
-                return f_Channel;
-            }
-        }
+        /// <summary>
+        /// Gets the channel associated with the ban.
+        /// </summary>
+        public string Channel { get; private set; }
 
-        public string Mask {
-            get {
-                return f_Mask;
-            }
-        }
-        
-        private BanInfo()
-        {
-        }
-        
+        /// <summary>
+        /// Gets the mask of the ban.
+        /// </summary>
+        public string Mask { get; private set; }
+
+        private BanInfo() { }
+
+        /// <summary>
+        /// Parses the ban information from an IRC message.
+        /// </summary>
+        /// <param name="data">The IRC message data.</param>
+        /// <returns>A BanInfo object containing the parsed data.</returns>
         public static BanInfo Parse(IrcMessageData data)
         {
-            BanInfo info = new BanInfo();
-            // :magnet.oftc.net 367 meebey #smuxi test!test@test meebey!~meebey@e176002059.adsl.alicedsl.de 1216309801..
-            info.f_Channel = data.RawMessageArray[3];
-            info.f_Mask= data.RawMessageArray[4];
+            BanInfo info = new BanInfo
+            {
+                // :magnet.oftc.net 367 meebey #smuxi test!test@test meebey!~meebey@e176002059.adsl.alicedsl.de 1216309801..
+                Channel = data.RawMessageArray[3],
+                Mask = data.RawMessageArray[4]
+            };
             return info;
         }
     }

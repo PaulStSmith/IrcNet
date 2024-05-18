@@ -33,88 +33,44 @@ using System.Collections.Specialized;
 namespace Meebey.SmartIrc4net
 {
     /// <summary>
-    /// 
+    /// Represents a non-RFC compliant IRC channel.
     /// </summary>
-    /// <threadsafety static="true" instance="true" />
     public class NonRfcChannel : Channel
     {
-        private Hashtable _Owners = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
-        private Hashtable _ChannelAdmins = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
-        private Hashtable _Halfops = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NonRfcChannel"/> class.
+        /// </summary>
+        /// <param name="name">The name of the channel.</param>
+        internal NonRfcChannel(string name) : base(name) { }
 
         /// <summary>
-        /// 
+        /// Gets a thread-safe hashtable of the owners of the channel.
         /// </summary>
-        /// <param name="name"> </param>
-        internal NonRfcChannel(string name) : base(name)
-        {
-        }
-
-#if LOG4NET
-        ~NonRfcChannel()
-        {
-            Logger.ChannelSyncing.Debug("NonRfcChannel ("+Name+") destroyed");
-        }
-#endif
+        public Hashtable Owners => (Hashtable)UnsafeOwners.Clone();
 
         /// <summary>
-        /// 
+        /// Gets a thread-safe hashtable of the owners of the channel. This property is not safe to use directly.
         /// </summary>
-        /// <value> </value>
-        public Hashtable Owners {
-            get {
-                return (Hashtable) _Owners.Clone();
-            }
-        }
+        internal Hashtable UnsafeOwners { get; } = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
 
         /// <summary>
-        /// 
+        /// Gets a thread-safe hashtable of the channel admins.
         /// </summary>
-        /// <value> </value>
-        internal Hashtable UnsafeOwners {
-            get {
-                return _Owners;
-            }
-        }
+        public Hashtable ChannelAdmins => (Hashtable)UnsafeChannelAdmins.Clone();
 
         /// <summary>
-        /// 
+        /// Gets a thread-safe hashtable of the channel admins. This property is not safe to use directly.
         /// </summary>
-        /// <value> </value>
-        public Hashtable ChannelAdmins {
-            get {
-                return (Hashtable) _ChannelAdmins.Clone();
-            }
-        }
+        internal Hashtable UnsafeChannelAdmins { get; } = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
 
         /// <summary>
-        /// 
+        /// Gets a thread-safe hashtable of the half-operators of the channel.
         /// </summary>
-        /// <value> </value>
-        internal Hashtable UnsafeChannelAdmins {
-            get {
-                return _ChannelAdmins;
-            }
-        }
+        public Hashtable Halfops => (Hashtable)UnsafeHalfops.Clone();
 
         /// <summary>
-        /// 
+        /// Gets a thread-safe hashtable of the half-operators of the channel. This property is not safe to use directly.
         /// </summary>
-        /// <value> </value>
-        public Hashtable Halfops {
-            get {
-                return (Hashtable) _Halfops.Clone();
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        internal Hashtable UnsafeHalfops {
-            get {
-                return _Halfops;
-            }
-        }
+        internal Hashtable UnsafeHalfops { get; } = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
     }
 }

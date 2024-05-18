@@ -28,30 +28,16 @@
 
 namespace Meebey.SmartIrc4net
 {
-    /// <summary>
-    ///
-    /// </summary>
-    /// <threadsafety static="true" instance="true" />
     public class NonRfcChannelUser : ChannelUser
     {
         public bool IsOwner { get; set; }
         public bool IsChannelAdmin { get; set; }
         public bool IsHalfop { get; set; }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="channel"> </param>
-        /// <param name="ircuser"> </param>
+
         internal NonRfcChannelUser(string channel, IrcUser ircuser) : base(channel, ircuser)
         {
         }
 
-#if LOG4NET
-        ~NonRfcChannelUser()
-        {
-            Logger.ChannelSyncing.Debug("NonRfcChannelUser ("+Channel+":"+IrcUser.Nick+") destroyed");
-        }
-#endif
+
     }
 }

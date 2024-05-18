@@ -163,9 +163,7 @@ namespace Meebey.SmartIrc4net
                 if (Int32.TryParse(hopcountStr, out hopcount)) {
                     whoInfo.f_HopCount = hopcount;
                 } else {
-#if LOG4NET
-                    Logger.MessageParser.Warn("Parse(): couldn't parse hopcount (as int): '" + hopcountStr + "'");
-#endif
+
                 }
                 // skip hop count
                 whoInfo.f_Realname = String.Join(" ", data.MessageArray, 1, data.MessageArray.Length - 1);

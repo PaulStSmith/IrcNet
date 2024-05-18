@@ -42,7 +42,7 @@ public class Benchmark
     const string REALNAME = "SmartIrc4net Benchmark Bot";
     const string CHANNEL  = "#C#";
     
-    public static void Main(string[] args)
+    public static void Main()
     {
         Thread.Sleep(5000);
 
@@ -68,9 +68,9 @@ public class Benchmark
     
     public static void TcpClientList()
     {
-        TcpClient tc = new TcpClient(SERVER, PORT);
-        StreamReader sr = new StreamReader(tc.GetStream());
-        StreamWriter sw = new StreamWriter(tc.GetStream());
+        var tc = new TcpClient(SERVER, PORT);
+        var sr = new StreamReader(tc.GetStream());
+        var sw = new StreamWriter(tc.GetStream());
         sw.Write(Rfc2812.Nick(NICK)+"\r\n");
         sw.Write(Rfc2812.User(NICK, 0, REALNAME)+"\r\n");
         sw.Flush();
@@ -98,7 +98,7 @@ public class Benchmark
     
     public static void IrcClientList()
     {
-        IrcClient irc = new IrcClient();
+        var irc = new IrcClient();
         irc.OnRawMessage += new IrcEventHandler(IrcClientListCallback);
         irc.Connect(SERVER, PORT);
         irc.Login(NICK, REALNAME);
@@ -116,7 +116,7 @@ public class Benchmark
     
     public static void IrcConnectionList()
     {
-        IrcConnection irc = new IrcConnection();
+        var irc = new IrcConnection();
         irc.OnReadLine += new ReadLineEventHandler(IrcConnectionListCallback);
         irc.Connect(SERVER, PORT);
         irc.WriteLine(Rfc2812.Nick(NICK), Priority.Critical);
@@ -127,7 +127,7 @@ public class Benchmark
     
     public static void IrcConnectionListCallback(object sender, ReadLineEventArgs e)
     {
-        string[] linear = e.Line.Split(new char[] {' '});
+        var linear = e.Line.Split(new char[] { ' ' });
         if (linear.Length >= 5 && linear[1] == "322") {
             Console.WriteLine("On the IRC channel "+CHANNEL+" are "+linear[4]+" users");
             ((IrcConnection)sender).Disconnect();

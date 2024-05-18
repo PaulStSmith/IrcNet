@@ -28,7 +28,24 @@
 
 namespace Meebey.SmartIrc4net
 {
+    /// <summary>
+    /// Represents the method that will handle an event when a line is read from the IRC server.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">A <see cref="ReadLineEventArgs"/> that contains the event data.</param>
     public delegate void ReadLineEventHandler(object sender, ReadLineEventArgs e);
+
+    /// <summary>
+    /// Represents the method that will handle an event when a line is written to the IRC server.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">A <see cref="WriteLineEventArgs"/> that contains the event data.</param>
     public delegate void WriteLineEventHandler(object sender, WriteLineEventArgs e);
+
+    /// <summary>
+    /// Represents the method that will handle an event when an error occurs during auto connect.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">A <see cref="AutoConnectErrorEventArgs"/> that contains the event data.</param>
     public delegate void AutoConnectErrorEventHandler(object sender, AutoConnectErrorEventArgs e);
 }

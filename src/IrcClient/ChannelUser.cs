@@ -29,165 +29,86 @@
 namespace Meebey.SmartIrc4net
 {
     /// <summary>
-    /// This class manages the information of a user within a channel.
+    /// Represents a user in a channel.
     /// </summary>
-    /// <remarks>
-    /// only used with channel sync
-    /// </remarks>
-    /// <threadsafety static="true" instance="true" />
     public class ChannelUser
     {
-        private string    _Channel;
-        private IrcUser   _IrcUser;
-        private bool      _IsOp;
-        private bool      _IsVoice;
+        /// <summary>
+        /// Gets the channel name.
+        /// </summary>
+        public string Channel { get; }
 
         /// <summary>
-        /// 
+        /// Gets the IRC user.
         /// </summary>
-        /// <param name="channel"> </param>
-        /// <param name="ircuser"> </param>
+        public IrcUser IrcUser { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the user is an operator.
+        /// </summary>
+        public bool IsOp { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the user has voice.
+        /// </summary>
+        public bool IsVoice { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChannelUser"/> class.
+        /// </summary>
+        /// <param name="channel">The name of the channel.</param>
+        /// <param name="ircuser">The name of the IRC user.</param>
         internal ChannelUser(string channel, IrcUser ircuser)
         {
-            _Channel = channel;
-            _IrcUser = ircuser;
+            Channel = channel;
+            IrcUser = ircuser;
         }
 
-#if LOG4NET
-        ~ChannelUser()
-        {
-            Logger.ChannelSyncing.Debug("ChannelUser ("+Channel+":"+IrcUser.Nick+") destroyed");
-        }
-#endif
+
 
         /// <summary>
-        /// Gets the channel name
+        /// Gets a value indicating whether the user is an IRC operator.
         /// </summary>
-        public string Channel {
-            get {
-                return _Channel;
-            }
-        }
+        public bool IsIrcOp => IrcUser.IsIrcOp;
 
         /// <summary>
-        /// Gets the server operator status of the user
+        /// Gets a value indicating whether the user is away.
         /// </summary>
-        public bool IsIrcOp {
-            get {
-                return _IrcUser.IsIrcOp;
-            }
-        }
+        public bool IsAway => IrcUser.IsAway;
 
         /// <summary>
-        /// Gets or sets the op flag of the user (+o)
+        /// Gets the user's nickname.
         /// </summary>
-        /// <remarks>
-        /// only used with channel sync
-        /// </remarks>
-        public bool IsOp {
-            get {
-                return _IsOp;
-            }
-            set {
-                _IsOp = value;
-            }
-        }
+        public string Nick => IrcUser.Nick;
 
         /// <summary>
-        /// Gets or sets the voice flag of the user (+v)
+        /// Gets the user's ident.
         /// </summary>
-        /// <remarks>
-        /// only used with channel sync
-        /// </remarks>
-        public bool IsVoice {
-            get {
-                return _IsVoice;
-            }
-            set {
-                _IsVoice = value;
-            }
-        }
+        public string Ident => IrcUser.Ident;
 
         /// <summary>
-        /// Gets the away status of the user
+        /// Gets the user's host.
         /// </summary>
-        public bool IsAway {
-            get {
-                return _IrcUser.IsAway;
-            }
-        }
+        public string Host => IrcUser.Host;
 
         /// <summary>
-        /// Gets the underlaying IrcUser object
+        /// Gets the user's real name.
         /// </summary>
-        public IrcUser IrcUser {
-            get {
-                return _IrcUser;
-            }
-        }
-
-        /// <summary>
-        /// Gets the nickname of the user
-        /// </summary>
-        public string Nick {
-            get {
-                return _IrcUser.Nick;
-            }
-        }
-
-        /// <summary>
-        /// Gets the identity (username) of the user, which is used by some IRC networks for authentication.
-        /// </summary>
-        public string Ident {
-            get {
-                return _IrcUser.Ident;
-            }
-        }
-
-        /// <summary>
-        /// Gets the hostname of the user,
-        /// </summary>
-        public string Host {
-            get {
-                return _IrcUser.Host;
-            }
-        }
-
-        /// <summary>
-        /// Gets the supposed real name of the user.
-        /// </summary>
-        public string Realname {
-            get {
-                return _IrcUser.Realname;
-            }
-        }
+        public string Realname => IrcUser.Realname;
 
         /// <summary>
         /// Gets the server the user is connected to.
         /// </summary>
-        /// <value> </value>
-        public string Server {
-            get {
-                return _IrcUser.Server;
-            }
-        }
+        public string Server => IrcUser.Server;
 
         /// <summary>
-        /// Gets or sets the count of hops between you and the user's server
+        /// Gets the user's hop count.
         /// </summary>
-        public int HopCount {
-            get {
-                return _IrcUser.HopCount;
-            }
-        }
+        public int HopCount => IrcUser.HopCount;
 
         /// <summary>
-        /// Gets the list of channels the user has joined
+        /// Gets the channels the user has joined.
         /// </summary>
-        public string[] JoinedChannels {
-            get {
-                return _IrcUser.JoinedChannels;
-            }
-        }
+        public string[] JoinedChannels => IrcUser.JoinedChannels;
     }
 }

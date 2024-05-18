@@ -34,229 +34,110 @@ using System.Collections.Specialized;
 namespace Meebey.SmartIrc4net
 {
     /// <summary>
-    /// 
+    /// Represents an IRC channel.
     /// </summary>
-    /// <threadsafety static="true" instance="true" />
     public class Channel
     {
-        private string           _Name;
-        private string           _Key       = String.Empty;
-        private Hashtable _Users = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
-        private Hashtable _Ops = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
-        private Hashtable _Voices = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
-        private StringCollection _Bans      = new StringCollection();
-        private List<string>     _BanExcepts = new List<string>();
-        private List<string>     _InviteExcepts = new List<string>();
-        private string           _Topic     = String.Empty;
-        private int              _UserLimit;
-        private string           _Mode      = String.Empty;
-        private DateTime         _ActiveSyncStart;
-        private DateTime         _ActiveSyncStop;
-        private TimeSpan         _ActiveSyncTime;
-        private bool             _IsSycned;
-        
         /// <summary>
-        /// 
+        /// Gets the name of the channel.
         /// </summary>
-        /// <param name="name"> </param>
+        public string Name { get; }
+
+        /// <summary>
+        /// Gets or sets the key (password) of the channel.
+        /// </summary>
+        public string Key { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets a clone of the hashtable containing the users of the channel.
+        /// </summary>
+        public Hashtable Users { get; } = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
+
+        /// <summary>
+        /// Gets a clone of the hashtable containing the operators of the channel.
+        /// </summary>
+        public Hashtable Ops { get; } = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
+
+        /// <summary>
+        /// Gets a clone of the hashtable containing the voices of the channel.
+        /// </summary>
+        public Hashtable Voices { get; } = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
+
+        /// <summary>
+        /// Gets the list of bans in the channel.
+        /// </summary>
+        public StringCollection Bans { get; } = new StringCollection();
+
+        /// <summary>
+        /// Gets the list of ban exceptions in the channel.
+        /// </summary>
+        public List<string> BanExceptions { get; } = new List<string>();
+
+        /// <summary>
+        /// Gets the list of invite exceptions in the channel.
+        /// </summary>
+        public List<string> InviteExceptions { get; } = new List<string>();
+
+        /// <summary>
+        /// Gets or sets the topic of the channel.
+        /// </summary>
+        public string Topic { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the user limit of the channel.
+        /// </summary>
+        public int UserLimit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the mode of the channel.
+        /// </summary>
+        public string Mode { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets the start time of the active sync.
+        /// </summary>
+        public DateTime ActiveSyncStart { get; }
+
+        /// <summary>
+        /// Gets or sets the stop time of the active sync.
+        /// </summary>
+        public DateTime ActiveSyncStop { get; set; }
+
+        /// <summary>
+        /// Gets the duration of the active sync.
+        /// </summary>
+        public TimeSpan ActiveSyncTime { get; private set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the channel is synced.
+        /// </summary>
+        public bool IsSynced { get; set; }
+
+        /// <summary>
+        /// Gets the hashtable containing the users of the channel.
+        /// </summary>
+        internal Hashtable UnsafeUsers { get; } = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
+
+        /// <summary>
+        /// Gets the hashtable containing the operators of the channel.
+        /// </summary>
+        internal Hashtable UnsafeOps { get; } = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
+
+        /// <summary>
+        /// Gets the hashtable containing the voices of the channel.
+        /// </summary>
+        internal Hashtable UnsafeVoices { get; } = Hashtable.Synchronized(new Hashtable(StringComparer.OrdinalIgnoreCase));
+
+        /// <summary>
+        /// Initializes a new instance of the Channel class.
+        /// </summary>
+        /// <param name="name">The name of the channel.</param>
         internal Channel(string name)
         {
-            _Name = name;
-            _ActiveSyncStart = DateTime.Now;
+            Name = name;
+            ActiveSyncStart = DateTime.Now;
         }
 
-#if LOG4NET
-        ~Channel()
-        {
-            Logger.ChannelSyncing.Debug("Channel ("+Name+") destroyed");
-        }
-#endif
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public string Name {
-            get {
-                return _Name;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public string Key {
-            get {
-                return _Key;
-            }
-            set {
-                _Key = value;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public Hashtable Users {
-            get {
-                return (Hashtable)_Users.Clone();
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        internal Hashtable UnsafeUsers {
-            get {
-                return _Users;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public Hashtable Ops {
-            get {
-                return (Hashtable)_Ops.Clone();
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        internal Hashtable UnsafeOps {
-            get {
-                return _Ops;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public Hashtable Voices {
-            get {
-                return (Hashtable)_Voices.Clone();
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        internal Hashtable UnsafeVoices {
-            get {
-                return _Voices;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public StringCollection Bans {
-            get {
-                return _Bans;
-            }
-        }
-
-        public List<string> BanExceptions {
-            get {
-                return _BanExcepts;
-            }
-        }
-
-        public List<string> InviteExceptions {
-            get {
-                return _InviteExcepts;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public string Topic {
-            get {
-                return _Topic;
-            }
-            set {
-                _Topic = value;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public int UserLimit {
-            get {
-                return _UserLimit;
-            }
-            set {
-                _UserLimit = value;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public string Mode {
-            get {
-                return _Mode;
-            }
-            set {
-                _Mode = value;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public DateTime ActiveSyncStart {
-            get {
-                return _ActiveSyncStart;
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public DateTime ActiveSyncStop {
-            get {
-                return _ActiveSyncStop;
-            }
-            set {
-                _ActiveSyncStop = value;
-                _ActiveSyncTime = _ActiveSyncStop.Subtract(_ActiveSyncStart);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <value> </value>
-        public TimeSpan ActiveSyncTime {
-            get {
-                return _ActiveSyncTime;
-            }
-        }
-
-        public bool IsSycned {
-            get {
-                return _IsSycned;
-            }
-            set {
-                _IsSycned = value;
-            }
-        }
     }
 }

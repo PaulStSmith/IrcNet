@@ -30,35 +30,37 @@ using System;
 
 namespace Meebey.SmartIrc4net
 {
+    /// <summary>
+    /// Stores information about an IRC channel.
+    /// </summary>
     public class ChannelInfo
     {
-        private string   f_Channel;
-        private int      f_UserCount;
-        private string   f_Topic;
-        
-        public string Channel {
-            get {
-                return f_Channel;
-            }
-        }
+        /// <summary>
+        /// Gets the channel name.
+        /// </summary>
+        public string Channel { get; }
 
-        public int UserCount {
-            get {
-                return f_UserCount;
-            }
-        }
-        
-        public string Topic {
-            get {
-                return f_Topic;
-            }
-        }
-        
+        /// <summary>
+        /// Gets the user count in the channel.
+        /// </summary>
+        public int UserCount { get; }
+
+        /// <summary>
+        /// Gets the topic of the channel.
+        /// </summary>
+        public string Topic { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChannelInfo"/> class.
+        /// </summary>
+        /// <param name="channel">The channel name.</param>
+        /// <param name="userCount">The user count in the channel.</param>
+        /// <param name="topic">The topic of the channel.</param>
         internal ChannelInfo(string channel, int userCount, string topic)
         {
-            f_Channel = channel;
-            f_UserCount = userCount;
-            f_Topic = topic;
+            Channel = channel;
+            UserCount = userCount;
+            Topic = topic;
         }
     }
 }
