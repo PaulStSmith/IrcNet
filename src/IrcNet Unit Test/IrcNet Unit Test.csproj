@@ -56,9 +56,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\IrcNet\IrcNet.csproj">
+    <ProjectReference Include="..\IrcNet\IrcNet Library.csproj">
       <Project>{91D3003B-7E65-4EAF-8EE1-DA43832E7A9C}</Project>
-      <Name>IrcNet</Name>
+      <Name>IrcNet Library</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
