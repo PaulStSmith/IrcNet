@@ -3,6 +3,9 @@
   "WorkspaceRootPath": "C:\\Users\\pauls\\source\\repos\\IrcNet\\src\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{12834C77-CB4A-4982-8878-0EC6A074AB28}|Solution Items{12834C77-CB4A-4982-8878-0EC6A074AB28}|C:\\Users\\pauls\\source\\repos\\IrcNet\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{91D3003B-7E65-4EAF-8EE1-DA43832E7A9C}|IrcNet\\IrcNet.csproj|c:\\users\\pauls\\source\\repos\\ircnet\\src\\ircnet\\ircconnection\\ircconnection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{91D3003B-7E65-4EAF-8EE1-DA43832E7A9C}|IrcNet\\IrcNet.csproj|solutionrelative:ircnet\\ircconnection\\ircconnection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -55,6 +58,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\pauls\\source\\repos\\IrcNet\\.gitignore",
+              "RelativeDocumentMoniker": "..\\.gitignore",
+              "ToolTip": "C:\\Users\\pauls\\source\\repos\\IrcNet\\.gitignore",
+              "RelativeToolTip": "..\\.gitignore",
+              "ViewState": "AQIAAGwBAAAAgJDIGk8QwDIAAAAAAAAA",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF8SURBVDhPjVNLTgJBEG1lwpoFB3GNK9fieA48hD8iwT/ihwgSDAIHgAGXXsEV18CNzL/LquqZdsYM6kteXqcy3fWqpmpNRBgOhyABBEgpAFVKPIMUcYzUyOU\u002BXM/b2qtU3vkSfRjjZTCAMAw1A2LwzdFoBPP5HNqdzuL27n4juibWI\u002BUshBA1DIkhEx9iEorFotgslQqGYbxxAGFEqt1MxmPWJLbLZdZ\u002Bv89q5PMFPiTR6z2zdaxR0fXA0XTBcVywkb4fwHXjRteecIDNQ7UmExVYAdPcxYaqclN46na5WenMKjtlVnTYwcXlVYaDqImW9beD5N/TeGy32QHXm6hZ03ZgiSQHp2fnWQ4oBmJqWSqwAqZpZjt4aLXAD4J0VqyZsmoubfB8H2r1eoaD6NXZ9HcHO\u002BSA3f4AjifXl8rItOETM8ckB9WTWpYD9RdeZ1PWVWAHWXPQaDb59f/w8LiqHeh1pvGkCaP6qB8yXusoxmuNZ7XmII4O9vGuEF86osuDYRkpYQAAAABJRU5ErkJggg==",
+              "WhenOpened": "2024-05-19T10:54:08.395Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "IrcConnection.cs",
               "DocumentMoniker": "C:\\Users\\pauls\\source\\repos\\IrcNet\\src\\IrcNet\\IrcConnection\\IrcConnection.cs",
               "RelativeDocumentMoniker": "IrcNet\\IrcConnection\\IrcConnection.cs",
