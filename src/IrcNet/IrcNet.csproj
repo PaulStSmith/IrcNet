@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{91D3003B-7E65-4EAF-8EE1-DA43832E7A9C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SmartIrc4net</RootNamespace>
+    <AssemblyName>Meebey.SmartIrc4net</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\debug</OutputPath>
+    <DefineConstants>TRACE;DEBUG;LOG4NET;NET_2_0</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <ConsolePause>false</ConsolePause>
+    <RunWithWarnings>false</RunWithWarnings>
+    <Execution>
+      <Execution clr-version="Net_2_0" />
+    </Execution>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\release</OutputPath>
+    <DefineConstants>NET_2_0</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunWithWarnings>false</RunWithWarnings>
+    <ConsolePause>false</ConsolePause>
+    <Execution>
+      <Execution clr-version="Net_2_0" />
+    </Execution>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="IrcEventArgs\ActionEventArgs.cs" />
+    <Compile Include="IrcEventArgs\AutoConnectErrorEventArgs.cs" />
+    <Compile Include="IrcEventArgs\AwayEventArgs.cs" />
+    <Compile Include="IrcEventArgs\BanEventArgs.cs" />
+    <Compile Include="IrcEventArgs\BounceEventArgs.cs" />
+    <Compile Include="IrcEventArgs\ChannelAdminEventArgs.cs" />
+    <Compile Include="IrcEventArgs\ChannelModeChangeEventArgs.cs" />
+    <Compile Include="IrcEventArgs\ChannelRoleChangeEventArgs.cs" />
+    <Compile Include="IrcEventArgs\CtcpEventArgs.cs" />
+    <Compile Include="IrcEventArgs\DccChatEventArgs.cs" />
+    <Compile Include="IrcEventArgs\DccEventArgs.cs" />
+    <Compile Include="IrcEventArgs\DccSendEventArgs.cs" />
+    <Compile Include="IrcEventArgs\DccSendRequestEventArgs.cs" />
+    <Compile Include="IrcEventArgs\DeChannelAdminEventArgs.cs" />
+    <Compile Include="IrcEventArgs\DehalfopEventArgs.cs" />
+    <Compile Include="IrcEventArgs\DeopEventArgs.cs" />
+    <Compile Include="IrcEventArgs\DeownerEventArgs.cs" />
+    <Compile Include="IrcEventArgs\DevoiceEventArgs.cs" />
+    <Compile Include="IrcEventArgs\ErrorEventArgs.cs" />
+    <Compile Include="IrcEventArgs\HalfopEventArgs.cs" />
+    <Compile Include="IrcEventArgs\InviteEventArgs.cs" />
+    <Compile Include="IrcEventArgs\IrcEventArgs.cs" />
+    <Compile Include="IrcEventArgs\JoinEventArgs.cs" />
+    <Compile Include="IrcEventArgs\KickEventArgs.cs" />
+    <Compile Include="IrcEventArgs\ListEventArgs.cs" />
+    <Compile Include="IrcEventArgs\MotdEventArgs.cs" />
+    <Compile Include="IrcEventArgs\NamesEventArgs.cs" />
+    <Compile Include="IrcEventArgs\NickChangeEventArgs.cs" />
+    <Compile Include="IrcEventArgs\OpEventArgs.cs" />
+    <Compile Include="IrcEventArgs\OwnerEventArgs.cs" />
+    <Compile Include="IrcEventArgs\PartEventArgs.cs" />
+    <Compile Include="IrcEventArgs\PingEventArgs.cs" />
+    <Compile Include="IrcEventArgs\PongEventArgs.cs" />
+    <Compile Include="IrcEventArgs\QuitEventArgs.cs" />
+    <Compile Include="IrcEventArgs\ReadLineEventArgs.cs" />
+    <Compile Include="IrcEventArgs\TopicChangeEventArgs.cs" />
+    <Compile Include="IrcEventArgs\TopicEventArgs.cs" />
+    <Compile Include="IrcEventArgs\UnbanEventArgs.cs" />
+    <Compile Include="IrcEventArgs\VoiceEventArgs.cs" />
+    <Compile Include="IrcEventArgs\WhoEventArgs.cs" />
+    <Compile Include="IrcEventArgs\WriteLineEventArgs.cs" />
+    <Compile Include="IrcExceptions\AlreadyConnectedException.cs" />
+    <Compile Include="IrcExceptions\ConnectionException.cs" />
+    <Compile Include="IrcExceptions\CouldNotConnectException.cs" />
+    <Compile Include="IrcExceptions\NotConnectedException.cs" />
+    <Compile Include="IrcExceptions\SmartIrc4netException.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="Consts.cs" />
+    <Compile Include="IrcConnection\IrcConnection.cs" />
+    <Compile Include="IrcConnection\Delegates.cs" />
+    <Compile Include="IrcCommands\IrcCommands.cs" />
+    <Compile Include="IrcCommands\Rfc2812.cs" />
+    <Compile Include="IrcClient\IrcClient.cs" />
+    <Compile Include="IrcClient\IrcMessageData.cs" />
+    <Compile Include="IrcClient\Delegates.cs" />
+    <Compile Include="IrcClient\IrcUser.cs" />
+    <Compile Include="IrcClient\Channel.cs" />
+    <Compile Include="IrcClient\NonRfcChannel.cs" />
+    <Compile Include="IrcClient\ChannelUser.cs" />
+    <Compile Include="IrcClient\NonRfcChannelUser.cs" />
+    <Compile Include="IrcConnection\IrcProperties.cs" />
+    <Compile Include="IrcClient\ChannelInfo.cs" />
+    <Compile Include="IrcClient\WhoInfo.cs" />
+    <Compile Include="IrcClient\BanInfo.cs" />
+    <Compile Include="IrcFeatures\DccChat.cs" />
+    <Compile Include="IrcFeatures\DccConnection.cs" />
+    <Compile Include="IrcFeatures\DccSend.cs" />
+    <Compile Include="IrcFeatures\Delegates.cs" />
+    <Compile Include="IrcFeatures\IrcConstants.cs" />
+    <Compile Include="IrcFeatures\IrcFeatures.cs" />
+    <Compile Include="IrcConnection\ProxyType.cs" />
+    <Compile Include="IrcConnection\PrimaryOrFallbackEncoding.cs" />
+    <Compile Include="IrcClient\ServerProperties.cs" />
+    <Compile Include="IrcClient\ChannelModeChangeInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="AssemblyInfo.cs.in" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StarkSoftProxy\StarkSoftProxy.csproj">
+      <Project>{3f8cf2c1-ea37-444f-8693-a3a00b1131d2}</Project>
+      <Name>StarkSoftProxy</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
